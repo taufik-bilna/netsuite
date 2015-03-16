@@ -1,0 +1,12 @@
+/nbproject/
+/composer.phar
+public/webtools.php
+public/webtools.config.php
+public/img/
+public/temp/
+public/files/
+logs/
+tmp/
+/.idea/
+/.phalcon/
+*.wx*
