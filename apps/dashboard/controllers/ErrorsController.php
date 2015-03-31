@@ -13,12 +13,12 @@ class ErrorsController extends CoreController
 
     public function show404Action()
     {
-echo "404";    
+echo "<br/>controller Errors 404";    
     }
 
     public function show401Action()
     {
-echo "401";
+echo "<br/>controller Errors 401";
         /*$response = new \Phalcon\Http\Response();
         $response->setContentType('application/json', 'UTF-8');
         $response->setStatusCode(401, "Unauthorized");
@@ -30,11 +30,16 @@ echo "401";
 
     public function show411Action()
     {
-echo "40111111";die;
+echo "<br/>controller Errors 40111111";
     }
 
     public function show500Action()
     {
-echo "500";
+echo "<br/>controller Errors 500";
+    }
+
+    public function deleteAction()
+    {
+echo "<br/>controller Errors delete";        
     }
 }

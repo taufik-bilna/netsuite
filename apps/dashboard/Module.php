@@ -75,14 +75,14 @@ class Module implements ModuleDefinitionInterface
             /**
             * Check if the user is allowed to access certain action using the SecurityPlugin
             */
-            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin);
+//            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin);
             
             $dispatcher = new Dispatcher;
             $dispatcher->setDefaultNamespace("Ns\Dashboard\Controllers");
             $dispatcher->setEventsManager($eventsManager);
             
             return $dispatcher;
-        });
+       });
 
         /**
          * Setting up the view component

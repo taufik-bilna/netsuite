@@ -7,10 +7,11 @@ use Phalcon\Acl\Resource;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
-//use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 
-use Ns\Dashboard\Models\AdminRoles;
+use Ns\Dashboard\Models\AdminRoles,
+	Ns\Dashboard\Models\AdminRules,
+	Ns\Dashboard\Models\AdminUsers;
 
 /**
  * SecurityPlugin
@@ -30,7 +31,8 @@ class Security extends Plugin
 
 		//throw new \Exception("something");
 
-		if (!isset($this->persistent->acl)) {
+		//if (!isset($this->persistent->acl)) {
+		if (true) {
 
 			$acl = new AclList();
 
@@ -52,7 +54,8 @@ class Security extends Plugin
 				'products'     => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'invoices'     => array('index', 'profile'),
-				'dashboard'     => array('index', 'test', 'testing')
+				'dashboard'     => array('index', 'test', 'testing'),
+				'errors'     => array('show404', 'show401', 'show500','show411', 'delete')
 			);
 			foreach ($privateResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
@@ -63,7 +66,7 @@ class Security extends Plugin
 				'index'      => array('index','testing'),
 				'about'      => array('index'),
 				'register'   => array('index'),
-				'errors'     => array('show404', 'show500', 'show401'),
+				'errors'     => array('show404', 'show401', 'show500','show411', 'delete'),
 				'session'    => array('index', 'register', 'start', 'end'),
 				'contact'    => array('index', 'send')
 			);
@@ -75,6 +78,9 @@ class Security extends Plugin
 			foreach ($roles as $role) {
 				foreach ($publicResources as $resource => $actions) {
 					foreach ($actions as $action){
+// echo "<br/>role name ".$role->getName();
+// echo "<br/>resource ".$resource;
+// echo "<br/>action ".$action;						
 						$acl->allow($role->getName(), $resource, $action);
 					}
 				}
@@ -83,6 +89,9 @@ class Security extends Plugin
 			//Grant acess to private area to role Users
 			foreach ($privateResources as $resource => $actions) {
 				foreach ($actions as $action){
+// echo "<br/>role name Users";
+// echo "<br/>resource ".$resource;
+// echo "<br/>action ".$action;						
 					$acl->allow('Users', $resource, $action);
 				}
 			}
@@ -115,17 +124,19 @@ die;*/
 
 		$controller = $dispatcher->getControllerName();
 		$action = $dispatcher->getActionName();
-
+echo "<br/>controller ".$controller;
+echo "<br/>action ".$action;
 		$acl = $this->getAcl();
-
+//die;
 		$allowed = $acl->isAllowed($role, $controller, $action);
 		if ($allowed != Acl::ALLOW) {
 //die('bchsbdhcbsdhcbdshcb');			
-			/*$dispatcher->forward(array(
-				'controller' => 'errors',
-				'action'     => 'show401'
-			));
-			return false;*/
+			// $dispatcher->forward(array(
+			// 	'controller' => 'errors',
+			// 	'action'     => 'show401'
+			// ));
+			// return false;
+echo "<br/>not allowed ";			//die;
 			$dispatcher->forward(array(
 				'controller' => 'errors',
 				'action' => 'show401'

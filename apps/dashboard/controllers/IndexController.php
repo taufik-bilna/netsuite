@@ -1,4 +1,7 @@
 <?php
+/*
+ * @author      Bilna Development <development@bilna.com> 
+ */
 
 namespace Ns\Dashboard\Controllers;
 
@@ -8,8 +11,6 @@ use Ns\Core\Controllers\CoreController;
 
 class IndexController extends CoreController
 {
-	//protected $logger;
-
 	/*
 	 * initialize
      */
@@ -19,39 +20,21 @@ class IndexController extends CoreController
 	}
 
 	/*
-	 * example logger usage
+	 * index 
      */
     public function indexAction()
     {
-    	//$logger = $this->di->get('logger');
-    	/*$this->logger->log(__METHOD__." This is a message");*/
-        $this->view->selected   = "test cscsc scscscsc";
+        if( $this->request->getPost() )
+        {
+die('chdbch');
+        }else{
+            die('ok');
+        }
     }
 
-    public function testingAction()
+    public function check()
     {
-        //$logger = $this->di->get('logger');
-        /*$this->logger->log(__METHOD__." This is a message");*/
-        $this->view->selected   = "testing";
+        die('hbsvdhc');
     }
-
-    /*
-	 * example logger usage
-     */
-    public function testAction()
-    {
-    	//$logger = $this->di->get('logger');
-    	/*$this->logger->log(__METHOD__." This is a message xxxxx");
-    	$v = 'test di Dashboard module';
-
-    	$this->logger->push(new FileAdapter('/tmp/Dashboard_xxxxx_'.date("Ymd").'.log'));
-    	$this->logger->log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-
-        $this->setJsonResponse();
-        return array('success' => true, 'data' => $v);*/
-        echo "string scss scsc";
-    	//$this->view->setVar("v", $v);
-    }
-
 }
 

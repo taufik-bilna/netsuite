@@ -36,6 +36,13 @@ $di['router'] = function () {
         'action' => 2
     ));
 
+    $router->add('/logout', array(
+        'module' => 'dashboard',
+        'controller' => 'login',
+        'action' => 'logout' 
+    ));
+
+    $router->removeExtraSlashes(true);
 
     return $router;
 };
