@@ -1,14 +1,12 @@
-
-
-  <body class="login-body">
+<body class="login-body">
 
     <div class="container">
 
       <form class="form-signin" action="{{ url('login') }}" method="post">
         <h2 class="form-signin-heading">sign in now</h2>
         <div class="login-wrap">
-            <input name="username" type="text" class="form-control" placeholder="User Name" autofocus>
-            <input name="password" type="password" class="form-control" placeholder="Password">
+            <input name="login[username]" type="text" class="form-control" placeholder="User Name" autofocus>
+            <input name="login[password]" type="password" class="form-control" placeholder="Password">
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> Remember me
                 <span class="pull-right">

@@ -132,16 +132,17 @@ class Module implements ModuleDefinitionInterface
          * Database connection is created based in the parameters defined in the configuration file
          */
         $di['db'] = function () use ($config) {
-            $eventsManager = new \Phalcon\Events\Manager();
+            /*$eventsManager = new \Phalcon\Events\Manager();
             $queryLogger = new \Ns\Dashboard\Libraries\Phalcon\Db\Profiler\QueryLogger();
             
-            $logging = new FileAdapter("/tmp/dbXXXX.log");
+            $logging = new FileAdapter("/tmp/dbXXXX.log");*/
 
             $adapter = new DbAdapter(array(
                 "host" => $config->database->host,
                 "username" => $config->database->username,
                 "password" => $config->database->password,
-                "dbname" => $config->database->dbname
+                "dbname" => $config->database->dbname,
+                "port" => $config->database->port
             ));
 
             /*$eventsManager->attach('db', function($event, $adapter) use ($logging) {
@@ -152,11 +153,11 @@ class Module implements ModuleDefinitionInterface
                     $logging->log($adapter->getSQLStatement(), \Phalcon\Logger::INFO);
                 }
             });*/
-            $eventsManager->attach('db', $queryLogger);
+            /*$eventsManager->attach('db', $queryLogger);
             //if ($config->debug) {
             if (true) {                
                 $adapter->setEventsManager($eventsManager);
-            }
+            }*/
 
             return $adapter;
         };

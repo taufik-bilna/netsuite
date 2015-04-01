@@ -6,7 +6,8 @@ return new \Phalcon\Config(array(
         'host'     => 'localhost',
         'username' => 'root',
         'password' => 'root',
-        'dbname'     => 'bilna_api',
+        'dbname'     => 'bilna_netsuite_wolverine',
+        'port'  => '4040'
     ),
     'application' => array(
         'controllersDir' => __DIR__ . '/../controllers/',

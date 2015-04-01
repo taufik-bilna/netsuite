@@ -31,3 +31,15 @@ try {
 } catch (Exception $e) {
     echo $e->getMessage();
 }
+function debug($m)
+{
+    echo '<pre>';
+    if( is_array($m) || is_object($m) )
+    {
+        print_r($m);
+    }else
+    {
+        echo $m;
+    }
+    echo '<pre>';
+}
