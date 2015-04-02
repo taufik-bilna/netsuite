@@ -42,7 +42,7 @@ class AdminUsers extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    protected $pwd;
+    protected $password;
 
     /**
      *
@@ -169,9 +169,9 @@ class AdminUsers extends \Phalcon\Mvc\Model
      * @param string $pwd
      * @return $this
      */
-    public function setPwd($pwd)
+    public function setPassword($pwd)
     {
-        $this->pwd = $pwd;
+        $this->password = $password;
 
         return $this;
     }
@@ -348,9 +348,9 @@ class AdminUsers extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getPwd()
+    public function getPassword()
     {
-        return $this->pwd;
+        return $this->password;
     }
 
     /**

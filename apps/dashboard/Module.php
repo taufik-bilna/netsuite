@@ -31,6 +31,7 @@ class Module implements ModuleDefinitionInterface
             'Ns\Dashboard\Controllers' => __DIR__ . '/controllers/',
             'Ns\Dashboard\Models'      => __DIR__ . '/models/',
             'Ns\Dashboard\Libraries'   => __DIR__ . '/libraries/',
+            'Ns\Dashboard\Helpers'     => __DIR__ . '/helpers/',
             'Ns\Dashboard\Plugin'      => __DIR__ . '/plugin/',
         ));
 

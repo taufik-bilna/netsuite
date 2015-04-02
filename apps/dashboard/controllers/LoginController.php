@@ -7,7 +7,8 @@ namespace Ns\Dashboard\Controllers;
 
 //use Phalcon\Http\Request;
 use Ns\Core\Controllers\CoreController,
-    Ns\Dashboard\Models\Admin\AdminUsers as Users; 
+    Ns\Dashboard\Models\Admin\AdminUsers as Users,
+    Ns\Dashboard\Libraries\Validation\Users as ValidateUser; 
 
 
 class LoginController extends CoreController
@@ -25,20 +26,26 @@ class LoginController extends CoreController
      */
     public function indexAction()
     {
-        
-        if( $this->request->getPost() )
-        {
-            $loginData = $this->request->getPost('login');
-            if( is_array($loginData) && array_key_exists('username', $loginData) && array_key_exists('password', $loginData) )
-            {             
-                $user = new Users;
-                $user->login($loginData['username'], $loginData['password']);
-debug($user->getId());die;
-                if( $this->__validateHash($loginData['password'], $user->getPassword()) )
-                {
-                    $result = true;
+        $result = false;
+        try{
+            if( $this->request->getPost() )
+            {
+                $loginData = $this->request->getPost('login');            
+                if( is_array($loginData) && array_key_exists('username', $loginData) && array_key_exists('password', $loginData) )
+                {             
+                    $user = new Users;                    
+                    $user->login($loginData['username'], $loginData['password']);
+                    $usersHelper = new ValidateUser;
+
+                    if( $usersHelper->validateHash($loginData['password'], $user->getPassword()) )
+                    {                
+                        $result = true;
+                    }                  
                 }
+die($result);                
             }
+        }catch(\Exception $e){
+            echo $e->getMessage();
         }
     }
 
@@ -47,37 +54,7 @@ debug($user->getId());die;
         die('ok logout');
     }
 
-    /**
-     * Validate hash against hashing method (with or without salt)
-     *
-     * @param string $password
-     * @param string $hash
-     * @return bool
-     * @throws Exception
-     */
-    private function __validateHash($password, $hash)
-    {
-        $hashArr = explode(':', $hash);
-        switch (count($hashArr)) {
-            case 1:
-                return $this->hash($password) === $hash;
-            case 2:
-                return $this->hash($hashArr[1] . $password) === $hashArr[0];
-        }
-        throw new \Exception("Invalid hash.", 1);
-        
-    }
-
-    /**
-     * Hash a string
-     *
-     * @param string $data
-     * @return string
-     */
-    public function hash($data)
-    {
-        return md5($data);
-    }
+    
 
 }
 
