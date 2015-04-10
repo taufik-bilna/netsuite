@@ -8,6 +8,14 @@ use Ns\Core\Libraries\Phalcon\Mvc\Model as Model;
 
 class AdminUsers extends Model
 {
+    /*
+     * initialize
+     */
+    /*public function initialize()
+    {
+        parent::initialize();
+    }*/
+    
     /**
      *
      * @var integer
@@ -25,6 +33,16 @@ class AdminUsers extends Model
      * @var integer
      */
     protected $lognum;
+
+    /**
+     * Returns the value of field id
+     *
+     * @return integer
+     */
+    /*public function getId()
+    {
+        return $this->id;
+    }*/
 
     /**
      * Initialize method for model.
@@ -77,7 +95,6 @@ class AdminUsers extends Model
           
             $this->recordLogin();
         }
-debug($this);die;        
         return $this;
     }
     
@@ -132,7 +149,7 @@ debug($this);die;
         $this->lognum = $this->lognum + 1;
 
         $this->save();
-debug($this->logdate);die; 
+//debug($this->logdate);die; 
         return $this;
     }
 }

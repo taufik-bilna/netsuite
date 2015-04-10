@@ -6,6 +6,14 @@ use Phalcon\Mvc\Model as PhalconModel;
 
 class Model extends PhalconModel
 {
+	/*
+	 * initialize
+     */
+	public function initialize()
+	{
+		parent::initialize();
+	}
+	
 	/**
      * Set/Get attribute wrapper
      *
