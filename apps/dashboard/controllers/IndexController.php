@@ -7,7 +7,7 @@ namespace Ns\Dashboard\Controllers;
 
 //use Phalcon\Http\Request;
 use Ns\Core\Controllers\CoreController; 
-//use Phalcon\Logger\Adapter\File as FileAdapter;
+use Ns\Dashboard\Models\Admin\AdminUsers as Users;
 
 class IndexController extends CoreController
 {
@@ -24,12 +24,12 @@ class IndexController extends CoreController
      */
     public function indexAction()
     {
-        if( $this->request->getPost() )
-        {
-die('chdbch');
-        }else{
-            die('ok');
-        }
+        $user = new Users;
+        $user->setTestingah(3);
+
+        debug($user->getTestingah());
+        //debug($user::$_underscoreCache);
+        die;            
     }
 
     public function check()

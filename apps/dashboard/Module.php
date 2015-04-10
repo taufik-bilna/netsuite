@@ -72,7 +72,7 @@ class Module implements ModuleDefinitionInterface
             /**
             * Handle exceptions and not-found exceptions using NotFoundPlugin
             */
-            $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin);
+//            $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin);
             /**
             * Check if the user is allowed to access certain action using the SecurityPlugin
             */
@@ -162,6 +162,18 @@ class Module implements ModuleDefinitionInterface
 
             return $adapter;
         };
+
+
+        //Set up the flash service
+        $di['flash'] = function() {
+            //return new \Phalcon\Flash\Direct();
+            return new \Ns\Core\Libraries\Phalcon\Flash\Message(array(
+                'error' => 'alert alert-block alert-danger fade in',
+                'success' => 'alert alert-success fade in',
+                'notice' => 'alert alert-warning fade in',
+            ));
+        };
+
     }
 
 }

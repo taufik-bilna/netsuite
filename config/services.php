@@ -67,3 +67,4 @@ $di['session'] = function () {
 
     return $session;
 };
+

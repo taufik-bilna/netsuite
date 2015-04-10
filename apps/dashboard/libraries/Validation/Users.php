@@ -20,10 +20,10 @@ class Users{
      * @throws Exception
      */
     public function validateHash($password, $hash)
-    {
+    {        
         $hashArr = explode(':', $hash);
         switch (count($hashArr)) {
-            case 1:          
+            case 1:
                 return $this->hash($password) === $hash;
             case 2:
                 return $this->hash($hashArr[1] . $password) === $hashArr[0];
