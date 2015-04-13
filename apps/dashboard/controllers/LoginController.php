@@ -39,10 +39,9 @@ class LoginController extends CoreController
                     $user = new Users;
                     $user->login($loginData['username'], $loginData['password']);
                     $usersHelper = new ValidateUser;
-debug($user->getId());die;
+
                     if( $usersHelper->validateHash($loginData['password'], $user->getPassword()) )
                     {          
-debug($user);die;                        
                         $this->session->set('auth', array(
                             'id'        => $user->getId(),
                             'username'  => $user->getUsername(),

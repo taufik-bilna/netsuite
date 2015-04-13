@@ -15,10 +15,11 @@ use Phalcon\Events\Manager as EventsManager,
 
 use Ns\Dashboard\Plugin\Security as SecurityPlugin,
     Ns\Dashboard\Plugin\NotFound as NotFoundPlugin;
+use Ns\Core\Libraries\Phalcon\Mvc\Application;
 
 class Module implements ModuleDefinitionInterface
 {
-
+    use Application;
     /**
      * Registers the module auto-loader
      */
@@ -72,7 +73,7 @@ class Module implements ModuleDefinitionInterface
             /**
             * Handle exceptions and not-found exceptions using NotFoundPlugin
             */
-//            $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin);
+            $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin);
             /**
             * Check if the user is allowed to access certain action using the SecurityPlugin
             */
@@ -132,19 +133,20 @@ class Module implements ModuleDefinitionInterface
         /**
          * Database connection is created based in the parameters defined in the configuration file
          */
-        $di['db'] = function () use ($config) {
+        $this->_initDatabase($di, $config);
+//        $di['db'] = function () use ($config) {
             /*$eventsManager = new \Phalcon\Events\Manager();
             $queryLogger = new \Ns\Dashboard\Libraries\Phalcon\Db\Profiler\QueryLogger();
             
             $logging = new FileAdapter("/tmp/dbXXXX.log");*/
 
-            $adapter = new DbAdapter(array(
-                "host" => $config->database->host,
-                "username" => $config->database->username,
-                "password" => $config->database->password,
-                "dbname" => $config->database->dbname,
-                "port" => $config->database->port
-            ));
+//            $adapter = new DbAdapter(array(
+//                "host" => $config->database->host,
+//                "username" => $config->database->username,
+//                "password" => $config->database->password,
+//                "dbname" => $config->database->dbname,
+//                "port" => $config->database->port
+//            ));
 
             /*$eventsManager->attach('db', function($event, $adapter) use ($logging) {
                 if ($event->getType() == 'beforeQuery') {
@@ -160,8 +162,8 @@ class Module implements ModuleDefinitionInterface
                 $adapter->setEventsManager($eventsManager);
             }*/
 
-            return $adapter;
-        };
+//            return $adapter;
+//        };
 
 
         //Set up the flash service

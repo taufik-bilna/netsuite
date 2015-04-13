@@ -4,7 +4,13 @@ use Phalcon\Mvc\Application;
 
 ini_set('display_errors' , 1);
 error_reporting(E_ALL);
-
+define('DS', DIRECTORY_SEPARATOR);
+if (!defined('ROOT_PATH')) {
+    define('ROOT_PATH', dirname(dirname(__FILE__)));
+}
+if (!defined('PUBLIC_PATH')) {
+    define('PUBLIC_PATH', dirname(__FILE__));
+}
 try {
     /**
      * Include services
@@ -29,7 +35,8 @@ try {
     echo $application->handle()->getContent();
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+    echo "error index php ".$e->getMessage();
+    exit;
 }
 function debug($m)
 {

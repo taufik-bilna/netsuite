@@ -24,7 +24,7 @@ class NotFound extends Plugin
 	public function beforeException(Event $event, MvcDispatcher $dispatcher, $exception)
 	{	
 		if ($exception instanceof DispatcherException) {
-echo "\nexception code : ".$exception->getCode()." - ".$exception->getMessage();			
+echo "\nexception code : ".$exception->getCode()." - ".$exception->getMessage();die;			
 			switch ($exception->getCode()) {
 				case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
 				case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
@@ -36,10 +36,26 @@ echo "\nexception code : ".$exception->getCode()." - ".$exception->getMessage();
 			}
 		}
 
+		self::printException($exception);die;
+
 		$dispatcher->forward(array(
 			'controller' => 'errors',
 			'action'     => 'show500'
 		));
 		return false;
 	}
+
+	/**
+     * Display exception
+     *
+     * @param Exception $e
+     */
+    public static function printException(\Exception $e)
+    {
+    	print '<pre>';
+
+        print $e->getMessage() . "\n\n";
+        print $e->getTraceAsString();
+        print '</pre>';
+    }
 }

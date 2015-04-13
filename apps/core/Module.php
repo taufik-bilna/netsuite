@@ -9,10 +9,11 @@ use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Logger\Adapter\File as FileAdapter;
 use Phalcon\Logger\Multiple as MultipleStream;
+use Ns\Core\Libraries\Phalcon\Mvc\Application;
 
 class Module implements ModuleDefinitionInterface
 {
-
+    use Application;
     /**
      * Registers the module auto-loader
      */
@@ -88,7 +89,8 @@ class Module implements ModuleDefinitionInterface
         /**
          * Database connection is created based in the parameters defined in the configuration file
          */
-        $di['db'] = function () use ($config) {
+        $this->_initDatabase($di, $config);
+        /*$di['db'] = function () use ($config) {
             return new DbAdapter(array(
                 "host" => $config->database->host,
                 "username" => $config->database->username,
@@ -96,7 +98,7 @@ class Module implements ModuleDefinitionInterface
                 "dbname" => $config->database->dbname,
                 "port" => $config->database->port
             ));
-        };
+        };*/
 
     }
 

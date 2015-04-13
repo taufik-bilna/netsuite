@@ -4,16 +4,16 @@ use Phalcon\Loader;
 /**
  * Register application modules
  */
-$application->registerModules(array(
-    'core' => array(
-        'className' => 'Ns\Core\Module',
-        'path' => __DIR__ . '/../apps/core/Module.php'
-    ),
-	'dashboard' => array(
-		'className' => 'Ns\Dashboard\Module',
-		'path' => __DIR__ . '/../apps/dashboard/Module.php'
-	)
-));
+$modulesPath = ['core', 'dashboard'];
+
+foreach($modulesPath as $module)
+{
+    $moduleName = ucfirst($module);
+    $bootstrap[$module]['className'] = 'Ns\\'.$moduleName . '\Module';
+    $bootstrap[$module]['path'] = __DIR__ . '/../apps/'.$module.'/Module.php';
+}
+
+$application->registerModules($bootstrap);
 
 /**
  * Register namespace modules

@@ -24,12 +24,19 @@ class IndexController extends CoreController
      */
     public function indexAction()
     {
-        $user = new Users;
-        $user->setTestingah(3);
+        try{
+            $user = new Users;
+            $user->setTestingah(3);
 
-        debug($user->getTestingah());
-        //debug($user::$_underscoreCache);
-        die;            
+            debug($user->getTestingah());
+            //debug($user::$_underscoreCache);
+            die;
+        }catch(\Exception $e)
+        {
+            //debug("catch error ".$e->getMessage());die;
+            throw $e;
+            
+        }            
     }
 
     public function check()
