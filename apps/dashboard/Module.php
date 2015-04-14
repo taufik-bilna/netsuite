@@ -133,7 +133,9 @@ class Module implements ModuleDefinitionInterface
         /**
          * Database connection is created based in the parameters defined in the configuration file
          */
+        $this->_initCache($di, $config);
         $this->_initDatabase($di, $config);
+        //$this->_initRouter($di, $config);
 //        $di['db'] = function () use ($config) {
             /*$eventsManager = new \Phalcon\Events\Manager();
             $queryLogger = new \Ns\Dashboard\Libraries\Phalcon\Db\Profiler\QueryLogger();

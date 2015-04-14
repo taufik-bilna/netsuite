@@ -26,6 +26,10 @@ class LoginController extends CoreController
 
 	/**
      * Administrator login action
+     *
+     * @return mixed
+     *
+     * @Route("/login", methods={"GET", "POST"}, name="login")
      */
     public function indexAction()
     {
