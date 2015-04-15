@@ -60,12 +60,27 @@ class Module implements ModuleDefinitionInterface
         /**
          * Setting up the view component
          */
-        $di['view'] = function () {
+        $di->set('view', function () use($config) {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
+            $view->registerEngines(array (
+                
+                '.volt' => function ($view, $di) use ($config) {
+                    $volt = new Volt($view, $di);
+                    $volt->setOptions(array (
+                        'compiledPath' => $config->logger->viewcache,
+                        'compiledSeparator' => '_',
+                        'stat' => true,
+                        'compileAlways' => true 
+                    ));
+        
+                    return $volt;
+                },
+                '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
+            ));
 
             return $view;
-        };
+        }, true);
 
         $di['logger'] = function() use ($config){
             

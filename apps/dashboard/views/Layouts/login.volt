@@ -1,0 +1,1 @@
+xxxxxxxxxxxxxxx<?php echo $this->getContent() ?>

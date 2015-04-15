@@ -13,7 +13,9 @@ use Ns\Core\Controllers\CoreController,
 use Ns\Dashboard\Models\Test\Robots;
 use Ns\Dashboard\Models\Test\Parts;
 use Ns\Dashboard\Models\Test\RobotsParts;
-
+/**
+ * @RoutePrefix("/")
+ */
 class LoginController extends CoreController
 {
 	/*
@@ -29,7 +31,7 @@ class LoginController extends CoreController
      *
      * @return mixed
      *
-     * @Route("/login", methods={"GET", "POST"}, name="login")
+     * @Route("login", methods={"GET", "POST"}, name="login")
      */
     public function indexAction()
     {
@@ -42,9 +44,8 @@ class LoginController extends CoreController
                 {             
                     $user = new Users;
                     $user->login($loginData['username'], $loginData['password']);
-                    $usersHelper = new ValidateUser;
 
-                    if( $usersHelper->validateHash($loginData['password'], $user->getPassword()) )
+                    if( $this->security->checkHash($loginData['password'], $user->getPassword()))
                     {          
                         $this->session->set('auth', array(
                             'id'        => $user->getId(),
@@ -58,14 +59,14 @@ class LoginController extends CoreController
                         ));             
                         $result = true;
                     }else{
-                        //$this->view->error = "Invalid User Name or Password.";
                         $this->flash->error('Invalid User Name or Password.');
                     }                  
                 }
                 if($result){
-                    $this->dispatcher->forward(array(
+                    /*$this->dispatcher->forward(array(
                         'controller' => 'index'
-                    ));
+                    ));*/
+                    $this->response->redirect('dashboard');
                 }             
             }
         }catch(\Exception $e){
@@ -79,7 +80,18 @@ class LoginController extends CoreController
         die('ok logout');
     }
 
-    
+    /**
+     * Administrator register action
+     *
+     * @return mixed
+     *
+     * @Route("register", methods={"GET", "POST"}, name="register")
+     */
+    public function registerAction()
+    {
+        /*$view = $this->getDI()->get('view');
+        $this->view->setVar("postId", $view);*/
+    }
 
 }
 

@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Mvc\Application;
+use Phalcon\DI\FactoryDefault;
 
 ini_set('display_errors' , 1);
 error_reporting(E_ALL);
@@ -13,15 +14,9 @@ if (!defined('PUBLIC_PATH')) {
 }
 try {
     /**
-     * Include services
+     * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
      */
-    require __DIR__ . '/../config/services.php';
-
-    /**
-     * Include services
-     */
-    require __DIR__ . '/../config/logger.php';
-    
+    $di = new FactoryDefault();
     /**
      * Handle the request
      */
@@ -31,6 +26,15 @@ try {
      * Include modules
      */
     require __DIR__ . '/../config/modules.php';
+    /**
+     * Include services
+     */
+    require __DIR__ . '/../config/services.php';
+
+    /**
+     * Include services
+     */
+    require __DIR__ . '/../config/logger.php';
 
     echo $application->handle()->getContent();
 

@@ -8,7 +8,9 @@ namespace Ns\Dashboard\Controllers;
 //use Phalcon\Http\Request;
 use Ns\Core\Controllers\CoreController; 
 use Ns\Dashboard\Models\Admin\AdminUsers as Users;
-
+/**
+ * @RoutePrefix("")
+ */
 class IndexController extends CoreController
 {
 	/*
@@ -20,17 +22,20 @@ class IndexController extends CoreController
 	}
 
 	/*
-	 * index 
+	 * index
+     * @return mixed
+     *
+     * @Route("/dashboard", methods={"GET", "POST"}, name="dashboard") 
      */
     public function indexAction()
     {
         try{
             $user = new Users;
-            $user->setTestingah(3);
+            //$user->setTestingah(3);
 
-            debug($user->getTestingah());
+            //debug($user->getTestingah());
             //debug($user::$_underscoreCache);
-            die;
+            //die;
         }catch(\Exception $e)
         {
             //debug("catch error ".$e->getMessage());die;

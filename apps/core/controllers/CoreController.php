@@ -10,6 +10,9 @@ use Phalcon\Mvc\Controller;
 use Ns\Core\Libraries\ValidateLib as Validate;
 use Ns\Core\Libraries\DefaultConstant;*/
 
+/**
+ * @RoutePrefix("/")
+ */
 class CoreController extends Controller
 {
 	/*
@@ -117,5 +120,15 @@ class CoreController extends Controller
 				'params' => $params
 			)
 		);
+	}
+
+	/**
+	 * @return mixed
+	 * 
+	 * @Route("showcore", name="showcore")
+	 */
+	public function showcoreAction()
+	{
+		//echo 'show core action';
 	}
 }
