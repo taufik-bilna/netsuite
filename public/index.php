@@ -26,6 +26,12 @@ try {
      * Include modules
      */
     require __DIR__ . '/../config/modules.php';
+    
+    /**
+     * Include routes
+     */
+    require __DIR__ . '/../config/routes.php';
+
     /**
      * Include services
      */
