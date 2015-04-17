@@ -74,7 +74,7 @@ class UserGrid
      */
     public function getTableBodyView()
     {
-        return $this->_resolveView('partials/grid/body', 'dashboard');
+        return $this->_resolveView('partials/grid/body', 'core');
     }
 
     /**
@@ -97,7 +97,7 @@ class UserGrid
      */
     public function getLayoutView()
     {
-        return $this->_resolveView('partials/grid/layout', 'dashboard');
+        return $this->_resolveView('partials/grid/layout', 'core');
     }
 
     /**

@@ -10,10 +10,14 @@
 
 	<title>{% block title %}{% endblock %}</title>
 
-</head>
-{% block head %}
+	{% block head %}
 
-{% endblock %}
+	{% endblock %}
+
+</head>
+
+{% block header -%}
+{%- endblock %}
 
 {%- block content -%}
 {%- endblock %}

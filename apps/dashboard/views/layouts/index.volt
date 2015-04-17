@@ -32,10 +32,10 @@
 
     <section id="container" >
 		<!--header start-->
-		{{ partial('partials/common/header') }}
+		{{ partial('../../core/views/partials/common/header') }}
 		<!--header end-->
 		<!--sidebar start-->
-		{{ partial('partials/common/sidebar') }}
+		{{ partial('../../core/views/partials/common/sidebar') }}
 		<!--sidebar end-->
 
 		<?php echo $this->getContent() ?>
@@ -84,7 +84,7 @@
 
 		</script>
 		<!--footer start-->
-        {{ partial('partials/common/footer') }}
+        {{ partial('../../core/views/partials/common/footer') }}
         <!--footer end-->
     </section>
 
