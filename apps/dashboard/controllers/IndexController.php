@@ -8,6 +8,7 @@ namespace Ns\Dashboard\Controllers;
 //use Phalcon\Http\Request;
 use Ns\Core\Controllers\CoreController; 
 use Ns\Dashboard\Models\Admin\AdminUsers as Users;
+use Ns\Dashboard\Libraries\Grid\UserGrid;
 /**
  * @RoutePrefix("")
  */
@@ -30,12 +31,11 @@ class IndexController extends CoreController
     public function indexAction()
     {
         try{
-            $user = new Users;
-            //$user->setTestingah(3);
-
-            //debug($user->getTestingah());
-            //debug($user::$_underscoreCache);
-            //die;
+//debug($this->session->get('auth'));die;            
+            $grid = new UserGrid($this->view);
+            if ($response = $grid->getResponse()) {
+                return $response;
+            }
         }catch(\Exception $e)
         {
             //debug("catch error ".$e->getMessage());die;
