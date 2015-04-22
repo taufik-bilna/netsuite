@@ -11,6 +11,7 @@ use Phalcon\DI;
 use Phalcon\DiInterface;
 use Phalcon\Db\Column;
 use Ns\Core\Libraries\Form\Element\Text;
+use Ns\Core\Libraries\Grid\GridItem;
 
 class UserGrid
 {
@@ -196,6 +197,20 @@ class UserGrid
     public function getLayoutView()
     {
         return $this->_resolveView('partials/grid/layout', 'core');
+    }
+
+    /**
+     * Get current grid items.
+     *
+     * @return AbstractModel[]
+     */
+    public function getItems()
+    {
+        $items = [];
+        foreach ($this->_paginator->items as $item) {
+            $items[] = new GridItem($this, $item);
+        }
+        return $items;
     }
 
     /**
