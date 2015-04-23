@@ -1,5 +1,5 @@
 {% for columnName, column in grid.getColumns() %}
     <td>
-        <?php echo '<pre>';print_r($item);echo '</pre>';?>
+        {{ item[columnName] }}
     </td>
 {% endfor %}

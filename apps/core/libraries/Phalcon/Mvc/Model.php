@@ -11,10 +11,12 @@ class Model extends PhalconModel
 	/*
 	 * initialize
      */
-	public function initialize()
+	/*
+public function initialize()
 	{
 		parent::initialize();
 	}
+*/
 	
     /**
      * Implement a method that returns a string key based

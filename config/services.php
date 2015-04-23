@@ -30,6 +30,10 @@ $di['session'] = function () {
     return $session;
 };
 
+$di->set('modelsManager', function() {
+      return new Phalcon\Mvc\Model\Manager();
+ });
+
 /*$di->set(
     'annotations',
     function () {

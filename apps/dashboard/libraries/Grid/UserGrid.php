@@ -55,7 +55,7 @@ class UserGrid
         $this->_view->grid = $this;
 
         $source = $this->getSource();
-
+//error_log("\ngdf".json_encode($source->getPhql()), 3, '/tmp/phalcon.log');  
         //$this->_applyFilter($source);
         /**
          * Paginator.
@@ -68,7 +68,7 @@ class UserGrid
             ]
         );
         $this->_paginator = $paginator->getPaginate();
-        
+
         if($this->getDI()->getRequest()->isAjax())
         {
         	$view->disable();
@@ -86,7 +86,8 @@ class UserGrid
     {
         $this
             ->addTextColumn('u.username', 'Username')
-            ->addTextColumn('u.email', 'Email');
+            ->addTextColumn('u.email', 'Email')
+            ->addTextColumn('r.role_name', 'Role');
     }
 
     /**
@@ -206,8 +207,10 @@ class UserGrid
      */
     public function getItems()
     {
+//error_log("\nitem get ".json_encode($this->_paginator), 3, '/tmp/phalcon.log');
         $items = [];
         foreach ($this->_paginator->items as $item) {
+//error_log("\nitem".json_encode($item), 3, '/tmp/phalcon.log');                
             $items[] = new GridItem($this, $item);
         }
         return $items;
@@ -244,7 +247,10 @@ class UserGrid
     	$builder = new Builder();
     	$builder
     		->from(['u' => 'Ns\Dashboard\Models\Admin\AdminUsers'])
-    		->columns(['u.*'])
+    		//->addFrom('Ns\Dashboard\Models\Admin\AdminUsers', 'u')
+    		->columns(['u.*', 'r.*'])
+    		//->columns(['u.*'])    		
+    		->leftJoin('Ns\Dashboard\Models\Admin\AdminRoles', 'u.admin_role_id = r.role_id', 'r')
     		->orderBy('u.id DESC');
 
     	return $builder;

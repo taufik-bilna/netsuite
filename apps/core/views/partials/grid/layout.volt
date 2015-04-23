@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
-            <header class="panel-heading">
+            <!--header class="panel-heading">
                 Dynamic Table
-            </header>
+            </header-->
             <div class="panel-body">
                 <div class="adv-table">
                     <table  class="display table table-bordered table-striped" id="example">
