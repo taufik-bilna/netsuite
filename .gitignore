@@ -1,4 +1,4 @@
-.DS_Store
+*.DS_Store
 /nbproject/
 /composer.phar
 public/webtools.php
@@ -11,3 +11,5 @@ tmp/
 /.idea/
 /.phalcon/
 *.wx*
+apps/core/config/config.php
+apps/dashboard/config/config.php

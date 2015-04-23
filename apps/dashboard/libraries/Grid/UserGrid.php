@@ -9,6 +9,9 @@ use Phalcon\Mvc\ViewInterface;
 use Phalcon\Paginator\Adapter\QueryBuilder;
 use Phalcon\DI;
 use Phalcon\DiInterface;
+use Phalcon\Db\Column;
+use Ns\Core\Libraries\Form\Element\Text;
+use Ns\Core\Libraries\Grid\GridItem;
 
 class UserGrid
 {
@@ -32,6 +35,13 @@ class UserGrid
      * @var \stdClass
      */
     protected $_paginator;
+
+    /**
+     * Grid columns.
+     *
+     * @var array
+     */
+    protected $_columns;
 
 	/**
      * Create grid.
@@ -68,6 +78,75 @@ class UserGrid
     }
 
     /**
+     * Initialize grid columns.
+     *
+     * @return array
+     */
+    protected function _initColumns()
+    {
+        $this
+            ->addTextColumn('u.username', 'Username')
+            ->addTextColumn('u.email', 'Email');
+    }
+
+    /**
+     * Add column to grid.
+     *
+     * @param int    $id     Column id.
+     * @param string $label  Column label.
+     * @param array  $params Column params.
+     *
+     * @return $this
+     */
+    public function addTextColumn($id, $label, array $params = [])
+    {
+        $this->_columns[$id] = $this->_getDefaultColumnParams($params, $label);
+
+        if (!empty($this->_columns[$id]['filter'])) {
+            $this->_columns[$id]['filter'] = new Text($id);
+        }
+        return $this;
+    }
+
+    /**
+     * Get grid columns.
+     *
+     * @return array
+     */
+    public function getColumns()
+    {
+        if (!$this->_columns) {
+            $result = $this->_initColumns();
+            if (is_array($result)) {
+                $this->_columns = $result;
+            }
+        }
+
+        return $this->_columns;
+    }
+
+    /**
+     * Set default data to params.
+     *
+     * @param array  $params Columns params.
+     * @param string $label  Columns label.
+     *
+     * @return array
+     */
+    protected function _getDefaultColumnParams($params, $label)
+    {
+        return array_merge(
+            [
+                'label' => $label,
+                'type' => Column::BIND_PARAM_INT,
+                'filter' => true,
+                'sortable' => true
+            ],
+            $params
+        );
+    }
+
+    /**
      * Get grid table body view name.
      *
      * @return string
@@ -75,6 +154,26 @@ class UserGrid
     public function getTableBodyView()
     {
         return $this->_resolveView('partials/grid/body', 'core');
+    }
+
+    /**
+     * Grid has filter form?
+     *
+     * @return bool
+     */
+    public function hasFilterForm()
+    {
+        return true;
+    }
+
+    /**
+     * Get grid item view name.
+     *
+     * @return string
+     */
+    public function getItemView()
+    {
+        return $this->_resolveView('partials/grid/item', 'core');
     }
 
     /**
@@ -98,6 +197,20 @@ class UserGrid
     public function getLayoutView()
     {
         return $this->_resolveView('partials/grid/layout', 'core');
+    }
+
+    /**
+     * Get current grid items.
+     *
+     * @return AbstractModel[]
+     */
+    public function getItems()
+    {
+        $items = [];
+        foreach ($this->_paginator->items as $item) {
+            $items[] = new GridItem($this, $item);
+        }
+        return $items;
     }
 
     /**
