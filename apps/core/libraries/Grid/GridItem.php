@@ -55,14 +55,20 @@ class GridItem implements \Iterator, \ArrayAccess, \Countable
 
         // Resolve object data with normalizing keys.
         $data = $object;
+error_log("\natasnya lg ".json_encode($data), 3, '/tmp/phalcon.log');
         if (!is_array($data)) {
+error_log("\natas".json_encode($data), 3, '/tmp/phalcon.log');
             $data = $object->toArray();
+error_log("\n".json_encode($data), 3, '/tmp/phalcon.log');
         }
 //print_r($data);        
         foreach ($data as $key => $value) {
+
             if ($value instanceof AbstractModel) {
+//error_log("\n".print_r($key,1), 3, '/tmp/phalcon.log');
                 foreach ($value->toArray() as $fieldName => $fieldValue) {
                     $data[$key . '.' . $fieldName] = $fieldValue;
+                    //$data[$fieldName] = $fieldValue;
                 }
                 unset($data[$key]);
             }
