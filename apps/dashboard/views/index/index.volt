@@ -650,32 +650,68 @@
                                               24°
                                           </div>
                                       </div>
+>>>>>>> 1.3.4
                                   </div>
                               </div>
                           </div>
 
-                          <footer class="weather-category">
+<<<<<<< HEAD
+                          <footer class="follower-foot">
                               <ul>
-                                  <li class="active">
-                                      <h5>humidity</h5>
-                                      56%
+                                  <li>
+                                      <h5>2789</h5>
+                                      <p>Follower</p>
                                   </li>
                                   <li>
-                                      <h5>precip</h5>
-                                      1.50 in
-                                  </li>
-                                  <li>
-                                      <h5>winds</h5>
-                                      10 mph
+                                      <h5>270</h5>
+                                      <p>Following</p>
                                   </li>
                               </ul>
                           </footer>
-
                       </section>
-                      <!--weather statement end-->
+                      <!--follower end-->
                   </div>
               </div>
+              <!--weather statement start-->
+              <section class="panel">
+                  <div class="weather-bg">
+                      <div class="panel-body">
+                          <div class="row">
+                              <div class="col-xs-6">
+                                <i class="icon-cloud"></i>
+                                  California
+                              </div>
+                              <div class="col-xs-6">
+                                  <div class="degree">
+                                      24°
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
 
-            </section>
-        </section>
-        <!--main content end-->
+                  <footer class="weather-category">
+                      <ul>
+                          <li class="active">
+                              <h5>humidity</h5>
+                              56%
+                          </li>
+                          <li>
+                              <h5>precip</h5>
+                              1.50 in
+                          </li>
+                          <li>
+                              <h5>winds</h5>
+                              10 mph
+                          </li>
+                      </ul>
+                  </footer>
+
+              </section>
+              <!--weather statement end-->
+          </div>
+      </div>
+
+    </section>
+</section>
+<!--main content end-->

@@ -110,6 +110,31 @@ class UserGrid
     }
 
     /**
+     * Add column to grid with select filter.
+     *
+     * @param int    $id      Column id.
+     * @param string $label   Column label.
+     * @param array  $options Select options
+     * @param array  $params  Column params.
+     *
+     * @return $this
+     */
+    public function addSelectColumn(
+        $id,
+        $label,
+        array $options,
+        array $params = []
+    )
+    {
+        $this->_columns[$id] = $this->_getDefaultColumnParams($params, $label);
+
+        if (!empty($this->_columns[$id]['filter']))
+        {
+
+        }
+    }
+
+    /**
      * Get grid columns.
      *
      * @return array
