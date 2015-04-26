@@ -48,7 +48,9 @@ abstract class AbstractElement implements ElementInterface
      */
     public function __construct($name, array $options = [], array $attributes = [])
     {
-
+		$this->_name = $name;
+        $this->_options = array_merge($this->getDefaultOptions(), $options);
+        $this->_attributes = array_merge($this->getDefaultAttributes(), $attributes);
     }
 
     /**

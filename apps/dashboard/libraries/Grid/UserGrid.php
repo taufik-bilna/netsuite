@@ -3,6 +3,7 @@
 namespace Ns\Dashboard\Libraries\Grid;
 
 use Ns\Dashboard\Models\Admin\AdminUsers;
+use Ns\Dashboard\Models\Admin\AdminRoles as Roles;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ViewInterface;
@@ -11,6 +12,7 @@ use Phalcon\DI;
 use Phalcon\DiInterface;
 use Phalcon\Db\Column;
 use Ns\Core\Libraries\Form\Element\Text;
+use Ns\Core\Libraries\Form\Element\Select;
 use Ns\Core\Libraries\Grid\GridItem;
 
 class UserGrid
@@ -56,7 +58,7 @@ class UserGrid
 
         $source = $this->getSource();
 //error_log("\ngdf".json_encode($source->getPhql()), 3, '/tmp/phalcon.log');  
-        //$this->_applyFilter($source);
+        $this->_applyFilter($source);
         /**
          * Paginator.
          */
@@ -77,6 +79,74 @@ class UserGrid
         }
     }
 
+	/**
+     * Apply filter data on array.
+     *
+     * @param Builder $source Data.
+     *
+     * @return array
+     */
+    protected function _applyFilter(Builder $source)
+    {
+        $data = $this->_getParam('filter');
+error_log("\n".print_r($data,1), 3, '/tmp/bilnaNs.log');
+		foreach ($this->getColumns() as $name => $column)
+		{
+            // Can't use empty(), coz value can be '0'.
+            if (!isset($data[$name]) || $data[$name] == '')
+            {
+                continue;
+            }
+            $conditionLike = !isset($column['use_like']) || $column['use_like'];
+            
+            if (!empty($column['use_having']))
+            {
+                if ($conditionLike)
+                {
+                    $value = '%' . $data[$name] . '%';
+                } else {
+                    $value = $data[$name];
+                }
+                if (isset($column['type'])) {
+                    $value = $this->getDI()
+                        ->getDb()
+                        ->getInternalHandler()
+                        ->quote($value, $column['type']);
+                }
+                if ($conditionLike) {
+                    $source->having($name . ' LIKE ' . $value);
+                } else {
+                    $source->having($name . ' = ' . $value);
+                }
+            } else {
+            	$bindType = null;
+                $alias = str_replace('.', '_', $name);
+                if (isset($column['type'])) {
+                    $bindType = [$alias => $column['type']];
+                }
+error_log("\n".$name . ' LIKE :' . $alias . ':', 3, '/tmp/bilnaNs.log');                
+                if ($conditionLike) {
+                    $source->where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%'], $bindType);
+                } else {
+                    $source->where($name . ' = :' . $alias . ':', [$alias => $data[$name]], $bindType);
+                }
+            }
+        }        
+    }
+    
+    /**
+     * Get request param.
+     *
+     * @param string $name    Param name.
+     * @param mixed  $default Default value for param.
+     *
+     * @return mixed
+     */
+    protected function _getParam($name, $default = null)
+    {
+        return $this->getDI()->getRequest()->get($name, null, $default);
+    }
+
     /**
      * Initialize grid columns.
      *
@@ -87,7 +157,20 @@ class UserGrid
         $this
             ->addTextColumn('u.username', 'Username')
             ->addTextColumn('u.email', 'Email')
-            ->addTextColumn('r.role_name', 'Role');
+            //->addTextColumn('r.role_name', 'Role');
+            ->addSelectColumn(
+                'r.role_id',
+                'Role',
+                ['hasEmptyValue' => true, 'using' => ['role_id', 'role_name'], 'elementOptions' => Roles::find()],
+                [
+                    'use_having' => false,
+                    'use_like' => false,
+                    'output_action' =>
+                        function (GridItem $item) {
+                            return $item['r.role_name'];
+                        }
+                ]
+            );
     }
 
     /**
@@ -130,8 +213,14 @@ class UserGrid
 
         if (!empty($this->_columns[$id]['filter']))
         {
-
+			$element = new Select($id);
+            foreach ($options as $key => $value) {
+                $element->setOption($key, $value);
+            }
+            $this->_columns[$id]['filter'] = $element;
         }
+
+        return $this;
     }
 
     /**
@@ -249,17 +338,6 @@ class UserGrid
     public function getDI()
     {
         return DI::getDefault();
-    }
-    /**
-     * Apply filter data on array.
-     *
-     * @param Builder $source Data.
-     *
-     * @return array
-     */
-    protected function _applyFilter(Builder $source)
-    {
-
     }
 
 	/**

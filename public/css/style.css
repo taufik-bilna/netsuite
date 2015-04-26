@@ -4633,3 +4633,21 @@ tr.odd.gradeX td.sorting_1, tr.even.gradeX td.sorting_1, table.display tr.even.g
 .site-min-height {
     min-height: 900px;
 }
+
+.loading_stage {
+  background: black;
+  opacity: 0.7;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  width: 100%;
+  left: 0;
+  height: 100%;
+}
+
+.loading_stage span {
+  background: url('../img/loader-white.gif') no-repeat center center;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
