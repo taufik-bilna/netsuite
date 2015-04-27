@@ -13,6 +13,7 @@ use Phalcon\DiInterface;
 use Phalcon\Db\Column;
 use Ns\Core\Libraries\Form\Element\Text;
 use Ns\Core\Libraries\Form\Element\Select;
+use Ns\Core\Libraries\Form\Element\DateRange;
 use Ns\Core\Libraries\Grid\GridItem;
 
 class UserGrid
@@ -86,12 +87,15 @@ class UserGrid
      *
      * @return array
      */
-    protected function _applyFilter(Builder $source)
+    protected function _applyFilter(Builder &$source)
     {
         $data = $this->_getParam('filter');
 error_log("\n".print_r($data,1), 3, '/tmp/bilnaNs.log');
+        $i=0;
 		foreach ($this->getColumns() as $name => $column)
 		{
+            if($i=0) $where = 'where';
+            else $where = 'andWhere';
             // Can't use empty(), coz value can be '0'.
             if (!isset($data[$name]) || $data[$name] == '')
             {
@@ -124,13 +128,17 @@ error_log("\n".print_r($data,1), 3, '/tmp/bilnaNs.log');
                 if (isset($column['type'])) {
                     $bindType = [$alias => $column['type']];
                 }
-error_log("\n".$name . ' LIKE :' . $alias . ':', 3, '/tmp/bilnaNs.log');                
+error_log("\n".$name . ' LIKE :' . $alias . ':', 3, '/tmp/bilnaNs.log');      
+error_log("\n".$data[$name], 3, '/tmp/bilnaNs.log');                
+error_log("\n".print_r($bindType,1), 3, '/tmp/bilnaNs.log');                
                 if ($conditionLike) {
-                    $source->where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%'], $bindType);
+                    //$source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%'], $bindType);
+                    $source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%']);
                 } else {
-                    $source->where($name . ' = :' . $alias . ':', [$alias => $data[$name]], $bindType);
+                    $source->$where($name . ' = :' . $alias . ':', [$alias => $data[$name]], $bindType);
                 }
             }
+            $i++;
         }        
     }
     
@@ -157,7 +165,7 @@ error_log("\n".$name . ' LIKE :' . $alias . ':', 3, '/tmp/bilnaNs.log');
         $this
             ->addTextColumn('u.username', 'Username')
             ->addTextColumn('u.email', 'Email')
-            //->addTextColumn('r.role_name', 'Role');
+            ->addDateRangeColumn('u.created', 'Created')
             ->addSelectColumn(
                 'r.role_id',
                 'Role',
@@ -192,6 +200,16 @@ error_log("\n".$name . ' LIKE :' . $alias . ':', 3, '/tmp/bilnaNs.log');
         return $this;
     }
 
+    public function addDateRangeColumn($id, $label, array $params = [])
+    {
+        $this->_columns[$id] = $this->_getDefaultColumnParams($params, $label);
+        
+        if (!empty($this->_columns[$id]['filter'])) {
+            $this->_columns[$id]['filter'] = new DateRange($id);
+        }
+
+        return $this;
+    }
     /**
      * Add column to grid with select filter.
      *

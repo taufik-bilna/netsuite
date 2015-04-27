@@ -22,6 +22,12 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap-datepicker/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap-timepicker/compiled/timepicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap-datetimepicker/css/datetimepicker.css" />
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -56,6 +62,12 @@
 		<script src="js/owl.carousel.js" ></script>
 		<script src="js/jquery.customSelect.min.js" ></script>
 		<script src="js/respond.min.js" ></script>
+
+		<script type="text/javascript" src="assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="assets/bootstrap-daterangepicker/moment.min.js"></script>
+		<script type="text/javascript" src="assets/bootstrap-daterangepicker/daterangepicker.js"></script>
+
 
 		<script class="include" type="text/javascript" src="js/jquery.dcjqaccordion.2.7.js"></script>
 
