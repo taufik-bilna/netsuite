@@ -8,6 +8,19 @@ use Ns\Core\Libraries\Form\ElementInterface;
 class DateRange extends AbstractElement implements ElementInterface
 {
     /**
+     * Get element default attribute.
+     *
+     * @return array
+     */
+    public function getDefaultAttributes()
+    {
+        $default = ['id' => $this->getName(), 'name' => $this->getName(), 'type' => $this->getInputType()];
+        if ($this->getOption('required')) {
+            $default['required'] = 'required';
+        }
+        return $default;
+    }
+    /**
      * Get this input element type.
      *
      * @return string
@@ -22,10 +35,12 @@ class DateRange extends AbstractElement implements ElementInterface
      *
      * @return array
      */
-    public function getDefaultAttributes()
+    /*
+public function getDefaultAttributes()
     {
         return array_merge(parent::getDefaultAttributes(),   ['type' => $this->getInputType()]);
     }
+*/
 
     /**
      * Get element html template.
@@ -38,7 +53,7 @@ class DateRange extends AbstractElement implements ElementInterface
      */
     public function getHtmlTemplate()
     {
-        return $this->getOption('htmlTemplate', '<div class="input-group input-large" data-date="13/07/2013" data-date-format="mm/dd/yyyy"><input type="text"' . $this->_renderAttributes() . ' value="%s"><span class="input-group-addon">To</span><input type="text"' . $this->_renderAttributes('To') . ' value="%s"></div>');
+        return $this->getOption('htmlTemplate', '<div class="input-group input-large" data-date="13/07/2013" data-date-format="mm/dd/yyyy"><input class="form-control dpd1" ' . $this->_renderAttributes('from') . ' value="%s"><span class="input-group-addon">To</span><input  class="form-control dpd2" ' . $this->_renderAttributes('to') . ' value="%s"></div>');
     }
     
     /**
@@ -46,16 +61,16 @@ class DateRange extends AbstractElement implements ElementInterface
      *
      * @return string
      */
-    protected function _renderAttributes($suffix='From')
+    protected function _renderAttributes($suffix='from')
     {
         $html = '';
         foreach ($this->_attributes as $key => $attribute) {
             if($key == 'id' || $key == 'name')
-                $suffix = $suffix;
-            else
-                $suffix = "";
+                $attribute = $attribute.'['.$suffix.']]';
+            //else
+            //    $suffix = "";
 
-            $html .= sprintf(' %s="%s"', $key , $attribute . $suffix );
+            $html .= sprintf(' %s="%s"', $key , $attribute );
         }
 
         return $html;

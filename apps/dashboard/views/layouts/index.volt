@@ -68,6 +68,7 @@
 		<script type="text/javascript" src="assets/bootstrap-daterangepicker/moment.min.js"></script>
 		<script type="text/javascript" src="assets/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+		<script src="js/advanced-form-components.js"></script>
 
 		<script class="include" type="text/javascript" src="js/jquery.dcjqaccordion.2.7.js"></script>
 

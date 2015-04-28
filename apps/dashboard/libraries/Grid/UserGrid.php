@@ -94,6 +94,7 @@ error_log("\n".print_r($data,1), 3, '/tmp/bilnaNs.log');
         $i=0;
 		foreach ($this->getColumns() as $name => $column)
 		{
+error_log("\n".print_r($data['u.created'], 1), 3, '/tmp/bilnaNs.log');
             if($i=0) $where = 'where';
             else $where = 'andWhere';
             // Can't use empty(), coz value can be '0'.
@@ -163,6 +164,10 @@ error_log("\n".print_r($bindType,1), 3, '/tmp/bilnaNs.log');
     protected function _initColumns()
     {
         $this
+            ->addTextColumn('u.id', 'ID')
+            ->addTextColumn('u.firstname', 'First Name')
+            ->addTextColumn('u.lastname', 'Last Name')
+            ->addTextColumn('u.username', 'Username')
             ->addTextColumn('u.username', 'Username')
             ->addTextColumn('u.email', 'Email')
             ->addDateRangeColumn('u.created', 'Created')

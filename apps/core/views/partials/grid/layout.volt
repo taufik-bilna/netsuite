@@ -10,13 +10,13 @@
                         <thead>
                         <tr>
 					        {% for name, column in grid.getColumns() %}
-					        	<th>{{ column['label'] }}</th>
+					        	<th width="25px">{{ column['label'] }}</th>
 					        {% endfor %}
 				    	</tr>
 					    {% if grid.hasFilterForm() %}
 					        <tr class="grid-filter">
 					            {% for column in grid.getColumns() %}
-					            	<th>
+					            	<th width="25px">
 					            		{% set element = column['filter'] %}
 					                    {{ element.setAttribute('autocomplete', 'off').render() }}
 					            	</th>
