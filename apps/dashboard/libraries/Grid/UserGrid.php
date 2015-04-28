@@ -63,6 +63,7 @@ class UserGrid
         /**
          * Paginator.
          */
+var_dump($source->getPhql());        
         $paginator = new QueryBuilder(
             [
                 "builder" => $source,
@@ -89,12 +90,13 @@ class UserGrid
      */
     protected function _applyFilter(Builder &$source)
     {
-        $data = $this->_getParam('filter');
-error_log("\n".print_r($data,1), 3, '/tmp/bilnaNs.log');
+        $data = json_decode(base64_decode($this->_getParam('filter')), true);
+//error_log("\n".print_r(json_encode(base64_decode($data)),1), 3, '/tmp/bilnaNs.log');
+error_log("\ndata ".print_r($data,1), 3, '/tmp/bilnaNs.log');
         $i=0;
 		foreach ($this->getColumns() as $name => $column)
 		{
-error_log("\n".print_r($data['u.created'], 1), 3, '/tmp/bilnaNs.log');
+//error_log("\nhhhhhhhh".print_r(array_values($data['u.created']), 1), 3, '/tmp/bilnaNs.log');
             if($i=0) $where = 'where';
             else $where = 'andWhere';
             // Can't use empty(), coz value can be '0'.
@@ -102,8 +104,10 @@ error_log("\n".print_r($data['u.created'], 1), 3, '/tmp/bilnaNs.log');
             {
                 continue;
             }
+
             $conditionLike = !isset($column['use_like']) || $column['use_like'];
-            
+            $conditionBetween = !isset($column['use_between']) || $column['use_between'];
+
             if (!empty($column['use_having']))
             {
                 if ($conditionLike)
@@ -129,14 +133,34 @@ error_log("\n".print_r($data['u.created'], 1), 3, '/tmp/bilnaNs.log');
                 if (isset($column['type'])) {
                     $bindType = [$alias => $column['type']];
                 }
-error_log("\n".$name . ' LIKE :' . $alias . ':', 3, '/tmp/bilnaNs.log');      
-error_log("\n".$data[$name], 3, '/tmp/bilnaNs.log');                
-error_log("\n".print_r($bindType,1), 3, '/tmp/bilnaNs.log');                
+error_log("\n".$name . ' LIKE :' . $alias . ': use like ' .$conditionLike . ' use between '.$conditionBetween, 3, '/tmp/bilnaNs.log');      
+//error_log("\n".$data[$name], 3, '/tmp/bilnaNs.log');                
+//error_log("\n".print_r($bindType,1), 3, '/tmp/bilnaNs.log');                
                 if ($conditionLike) {
                     //$source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%'], $bindType);
                     $source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%']);
-                } else {
+                } /*else {
                     $source->$where($name . ' = :' . $alias . ':', [$alias => $data[$name]], $bindType);
+                }*/
+
+                if ($conditionBetween){
+                    $from = '31-12-1970';
+                    $to = '31-12-9999';
+                    foreach($data[$name] as $between){
+error_log("\nbetween ".print_r($between,1), 3, '/tmp/bilnaNs.log');                              
+                        if(isset($between['from']))
+                            $from = $between['from'];
+                        if(isset($between['to']))
+                            $to = $between['to'];
+                    }
+                    $arrFrom = explode("/", $from);
+                    $arrTo = explode("/", $to);
+error_log("\narrFrom ".$from, 3, '/tmp/bilnaNs.log');                              
+
+error_log("\ntest ".$arrFrom[2].'-'.$arrFrom[0].'-'.$arrFrom[1], 3, '/tmp/bilnaNs.log');                                                  
+                    //$source->$where($name . ' > :' .$alias . '_from AND ' . $name . ' < :' .$alias . '_to', [$alias.'_from' => $from, $alias.'_to' => $to]);
+                    $source->$where($name . ' > :' .$alias . '_from:', [$alias.'_from' => $arrFrom[2].'-'.$arrFrom[0].'-'.$arrFrom[1]]);
+                    $source->$where($name . ' < :' .$alias . '_to:', [$alias.'_to' => $arrTo[2].'-'.$arrTo[0].'-'.$arrTo[1]]);
                 }
             }
             $i++;
@@ -169,8 +193,8 @@ error_log("\n".print_r($bindType,1), 3, '/tmp/bilnaNs.log');
             ->addTextColumn('u.lastname', 'Last Name')
             ->addTextColumn('u.username', 'Username')
             ->addTextColumn('u.username', 'Username')
-            ->addTextColumn('u.email', 'Email')
-            ->addDateRangeColumn('u.created', 'Created')
+            ->addTextColumn('u.email', 'Email', ['use_between' => false, 'use_like' => true])
+            ->addDateRangeColumn('u.created', 'Created', ['use_between' => true, 'use_like' => false])
             ->addSelectColumn(
                 'r.role_id',
                 'Role',

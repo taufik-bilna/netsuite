@@ -53,7 +53,7 @@ public function getDefaultAttributes()
      */
     public function getHtmlTemplate()
     {
-        return $this->getOption('htmlTemplate', '<div class="input-group input-large" data-date="13/07/2013" data-date-format="mm/dd/yyyy"><input class="form-control dpd1" ' . $this->_renderAttributes('from') . ' value="%s"><span class="input-group-addon">To</span><input  class="form-control dpd2" ' . $this->_renderAttributes('to') . ' value="%s"></div>');
+        return $this->getOption('htmlTemplate', '<div class="input-group input-large .default-date-picker" data-date="13/07/2013" data-date-format="mm-dd-yyyy"><input data-between="from" class="form-control dpd1" ' . $this->_renderAttributes('from') . ' value="%s"><span class="input-group-addon">To</span><input data-between="to" class="form-control dpd2" ' . $this->_renderAttributes('to') . ' value="%s"></div>');
     }
     
     /**
@@ -65,8 +65,8 @@ public function getDefaultAttributes()
     {
         $html = '';
         foreach ($this->_attributes as $key => $attribute) {
-            if($key == 'id' || $key == 'name')
-                $attribute = $attribute.'['.$suffix.']]';
+            /*if($key == 'id' || $key == 'name')
+                $attribute = $attribute.'['.$suffix.']';*/
             //else
             //    $suffix = "";
 

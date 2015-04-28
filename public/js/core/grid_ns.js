@@ -73,11 +73,27 @@
                     $this = this,
                     collectData = function () {
                         var map = {};
+                        var x = [];
                         $($this.options.css.filterInputs).each(function () {
                             var value = $(this).val();
                             if (value) {
-                                map[$(this).attr("name")] = value;
+                                if(typeof $(this).attr("data-between") !== 'undefined'){
+                                    //map[$(this).attr("name")] = {};
+                                    //map[$(this).attr("name")][$(this).attr("data-between")] = value;
+                                    //between = $(this).attr("data-between");
+                                    var between = {};
+                                    
+                                    between[$(this).attr("data-between")] = value;
+                                    //x[$(this).attr("name")] = between;
+                                    x.push(between);
+console.log('xxxxx');
+                                    map[$(this).attr("name")] = x;
+                                }else{
+console.log('cdcdcdcdcd');
+                                    map[$(this).attr("name")] = value;
+                                }
                             }
+//console.log(map);                            
                         });
                         return map;
                     };
@@ -189,7 +205,7 @@
 
                 // If there is cookies - load params and remove cookie.
                 var data = $.cookie($this.element.attr('id'));
-console.log(data);                
+//console.log(data);                
                 if (data) {
                     data = JSON.parse(data);
                     $.removeCookie($this.element.attr('id'), {path: window.location.pathname});
@@ -200,7 +216,7 @@ console.log(data);
                                 $('[name="' + fk + '"]', $this.element).val(fv);
                             })
                         }
-console.log(name);
+//console.log(name);
                         $this.setParam(name, value);
                     });
 
@@ -224,8 +240,10 @@ console.log(name);
                 if (!$.contains(this.options.params, name)) {
                     this.options.params[name] = name;
                 }
-
+/*console.log(name);
+console.log(value);*/
                 this.element.data(name, value);
+//console.log(this.element.data);                
             },
 
             /**
@@ -247,12 +265,14 @@ console.log(name);
                     $this = this;
 
                 $.each(this.options.params, function (name) {
+//console.log(name);
                     var value = $this.getParam(name);
                     if (value) {
-                        params[name] = value;
+                        params[name] = window.btoa(JSON.stringify(value));
                     }
                 });
-
+//console.log(name);
+//console.log(params['filter']);
                 return params;
             },
             

@@ -58,6 +58,10 @@ class IndexController extends CoreController
 	    		
 die;  		     
 */
+/*        $params = 'price[currency]=IDR&qty[from]=0&qty[to]=1';
+$this->getDI()->getRequest()->get();
+
+die;*/
             $grid = new UserGrid($this->view);
             if ($response = $grid->getResponse()) {
                 return $response;
