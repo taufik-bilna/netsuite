@@ -97,6 +97,7 @@ error_log("\ndata ".print_r($data,1), 3, '/tmp/bilnaNs.log');
 		foreach ($this->getColumns() as $name => $column)
 		{
 //error_log("\nhhhhhhhh".print_r(array_values($data['u.created']), 1), 3, '/tmp/bilnaNs.log');
+//error_log("\ncolumn ".print_r($column, 1), 3, '/tmp/bilnaNs.log');
             if($i=0) $where = 'where';
             else $where = 'andWhere';
             // Can't use empty(), coz value can be '0'.
@@ -105,8 +106,8 @@ error_log("\ndata ".print_r($data,1), 3, '/tmp/bilnaNs.log');
                 continue;
             }
 
-            $conditionLike = !isset($column['use_like']) || $column['use_like'];
-            $conditionBetween = !isset($column['use_between']) || $column['use_between'];
+            $conditionLike = isset($column['use_like']) ? $column['use_like'] : false;
+            $conditionBetween = isset($column['use_between']) ? $column['use_between'] : false;
 
             if (!empty($column['use_having']))
             {
@@ -139,9 +140,10 @@ error_log("\n".$name . ' LIKE :' . $alias . ': use like ' .$conditionLike . ' us
                 if ($conditionLike) {
                     //$source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%'], $bindType);
                     $source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%']);
-                } /*else {
+                } elseif (!$conditionLike && !$conditionBetween) {
+error_log("\nmasuk sinih ", 3, '/tmp/bilnaNs.log');                      
                     $source->$where($name . ' = :' . $alias . ':', [$alias => $data[$name]], $bindType);
-                }*/
+                }
 
                 if ($conditionBetween){
                     $from = '31-12-1970';
