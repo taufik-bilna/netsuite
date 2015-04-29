@@ -10,7 +10,17 @@
                         <thead>
                         <tr>
 					        {% for name, column in grid.getColumns() %}
-					        	<th width="25px">{{ column['label'] }}</th>
+					        	
+					        	<th width="25px">
+					        		{% if column['sortable'] is defined %}
+					                    <a href="javascript:;" class="grid-sortable" data-sort="{{ name }}" data-direction="">
+					                        {{ column['label'] }}
+					                    </a>
+					                {% else %}
+						        		{{ column['label'] }}
+									{% endif %}	
+					        	</th>
+					        	
 					        {% endfor %}
 				    	</tr>
 					    {% if grid.hasFilterForm() %}

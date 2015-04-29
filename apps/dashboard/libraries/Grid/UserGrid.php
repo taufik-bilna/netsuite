@@ -60,6 +60,7 @@ class UserGrid
         $source = $this->getSource();
 //error_log("\ngdf".json_encode($source->getPhql()), 3, '/tmp/phalcon.log');  
         $this->_applyFilter($source);
+        $this->_applySorting($source);
         /**
          * Paginator.
          */
@@ -106,8 +107,8 @@ error_log("\ndata ".print_r($data,1), 3, '/tmp/bilnaNs.log');
                 continue;
             }
 
-            $conditionLike = isset($column['use_like']) ? $column['use_like'] : false;
-            $conditionBetween = isset($column['use_between']) ? $column['use_between'] : false;
+            $conditionLike = !isset($column['use_like']) || $column['use_like'];
+            $conditionBetween = !isset($column['use_between']) || $column['use_between'];
 
             if (!empty($column['use_having']))
             {
@@ -128,7 +129,27 @@ error_log("\ndata ".print_r($data,1), 3, '/tmp/bilnaNs.log');
                 } else {
                     $source->having($name . ' = ' . $value);
                 }
-            } else {
+            }elseif(!empty($column['use_between'])){ 
+
+                $from = '31-12-1970';
+                $to = '31-12-9999';
+                foreach($data[$name] as $between){
+error_log("\nbetween ".print_r($between,1), 3, '/tmp/bilnaNs.log');                              
+                    if(isset($between['from']))
+                        $from = $between['from'];
+                    if(isset($between['to']))
+                        $to = $between['to'];
+                }
+                $arrFrom = explode("/", $from);
+                $arrTo = explode("/", $to);
+error_log("\narrFrom ".$from, 3, '/tmp/bilnaNs.log');                              
+
+error_log("\ntest ".$arrFrom[2].'-'.$arrFrom[0].'-'.$arrFrom[1], 3, '/tmp/bilnaNs.log');                                                  
+                //$source->$where($name . ' > :' .$alias . '_from AND ' . $name . ' < :' .$alias . '_to', [$alias.'_from' => $from, $alias.'_to' => $to]);
+                $source->$where($name . ' > :' .$alias . '_from:', [$alias.'_from' => $arrFrom[2].'-'.$arrFrom[0].'-'.$arrFrom[1]]);
+                $source->$where($name . ' < :' .$alias . '_to:', [$alias.'_to' => $arrTo[2].'-'.$arrTo[0].'-'.$arrTo[1]]);
+
+            }else {
             	$bindType = null;
                 $alias = str_replace('.', '_', $name);
                 if (isset($column['type'])) {
@@ -140,33 +161,35 @@ error_log("\n".$name . ' LIKE :' . $alias . ': use like ' .$conditionLike . ' us
                 if ($conditionLike) {
                     //$source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%'], $bindType);
                     $source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%']);
-                } elseif (!$conditionLike && !$conditionBetween) {
-error_log("\nmasuk sinih ", 3, '/tmp/bilnaNs.log');                      
+                } else{                      
                     $source->$where($name . ' = :' . $alias . ':', [$alias => $data[$name]], $bindType);
                 }
 
-                if ($conditionBetween){
-                    $from = '31-12-1970';
-                    $to = '31-12-9999';
-                    foreach($data[$name] as $between){
-error_log("\nbetween ".print_r($between,1), 3, '/tmp/bilnaNs.log');                              
-                        if(isset($between['from']))
-                            $from = $between['from'];
-                        if(isset($between['to']))
-                            $to = $between['to'];
-                    }
-                    $arrFrom = explode("/", $from);
-                    $arrTo = explode("/", $to);
-error_log("\narrFrom ".$from, 3, '/tmp/bilnaNs.log');                              
-
-error_log("\ntest ".$arrFrom[2].'-'.$arrFrom[0].'-'.$arrFrom[1], 3, '/tmp/bilnaNs.log');                                                  
-                    //$source->$where($name . ' > :' .$alias . '_from AND ' . $name . ' < :' .$alias . '_to', [$alias.'_from' => $from, $alias.'_to' => $to]);
-                    $source->$where($name . ' > :' .$alias . '_from:', [$alias.'_from' => $arrFrom[2].'-'.$arrFrom[0].'-'.$arrFrom[1]]);
-                    $source->$where($name . ' < :' .$alias . '_to:', [$alias.'_to' => $arrTo[2].'-'.$arrTo[0].'-'.$arrTo[1]]);
-                }
             }
             $i++;
         }        
+    }
+    
+    /**
+     * Apply sorting data on array.
+     *
+     * @param Builder $source Data.
+     *
+     * @return array|void
+     */
+    protected function _applySorting(Builder &$source)
+    {
+        $sort = json_decode(base64_decode($this->_getParam('sort')),true);
+        $direction = json_decode(base64_decode($this->_getParam('direction', 'DESC')), true);
+error_log("\nsort ".$sort, 3, '/tmp/bilnaNs.log');
+error_log("\ndirection ".$direction, 3, '/tmp/bilnaNs.log');
+        // Additional checks.
+        if (!$sort || ($direction != 'DESC' && $direction != 'ASC')) {
+error_log("\nreturn ", 3, '/tmp/bilnaNs.log');
+            return;
+        }
+
+        $source->orderBy(sprintf('%s %s', $sort, $direction));
     }
     
     /**
