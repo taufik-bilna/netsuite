@@ -7,3 +7,14 @@
         {% endif %}
     </td>
 {% endfor %}
+{% if grid.hasActions() %}
+    <td class="actions">
+        {% for key, action in grid.getItemActions(item) %}
+            <a href="{% if action['href'] is defined %}
+            	{{ action['href'] }}
+            	{% endif %}">
+            bjsdbjs
+            </a>
+        {% endfor %}
+    </td>
+{% endif %}

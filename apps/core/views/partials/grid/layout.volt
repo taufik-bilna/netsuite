@@ -20,8 +20,10 @@
 						        		{{ column['label'] }}
 									{% endif %}	
 					        	</th>
-					        	
 					        {% endfor %}
+				        	{% if grid.hasActions() %}
+						        <th width="15%" class="actions">{{ 'Actions' }}</th>
+						    {% endif %}
 				    	</tr>
 					    {% if grid.hasFilterForm() %}
 					        <tr class="grid-filter">
@@ -31,6 +33,10 @@
 					                    {{ element.setAttribute('autocomplete', 'off').render() }}
 					            	</th>
 					            {% endfor %}
+					            	<th class="actions">
+						                <button class="btn btn-filter btn-primary">{{ 'Filter' }}</button>
+						                <button class="btn btn-warning">{{ 'Reset' }}</button>
+						            </th>
 					    {% endif %}
     					</thead>
 						{{ partial(grid.getTableBodyView(), ['grid': grid]) }}

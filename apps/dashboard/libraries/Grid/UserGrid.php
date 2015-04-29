@@ -353,6 +353,34 @@ error_log("\nreturn ", 3, '/tmp/bilnaNs.log');
         return true;
     }
 
+	/**
+     * Grid has actions?
+     *
+     * @return bool
+     */
+    public function hasActions()
+    {
+        return true;
+    }
+    
+    /**
+     * Get item action (Edit, Delete, etc).
+     *
+     * @param GridItem $item One item object.
+     *
+     * @return array
+     */
+    public function getItemActions(GridItem $item)
+    {
+        return [
+            'Edit' => ['href' => ['for' => 'admin-users-edit', 'id' => $item['u.id']]],
+            'Delete' => [
+                'href' => ['for' => 'admin-users-delete', 'id' => $item['u.id']],
+                'attr' => ['class' => 'grid-action-delete']
+            ]
+        ];
+    }
+    
     /**
      * Get grid item view name.
      *
