@@ -10,10 +10,11 @@
 {% if grid.hasActions() %}
     <td class="actions">
         {% for key, action in grid.getItemActions(item) %}
-            <a href="{% if action['href'] is defined %}
-            	{{ action['href'] }}
-            	{% endif %}">
-            bjsdbjs
+            <a
+                    href="{% if action['href'] is defined %}{{ url(action['href']) }}{% else %}javascript:;{% endif %}"
+            
+            >
+            {{ key }}
             </a>
         {% endfor %}
     </td>

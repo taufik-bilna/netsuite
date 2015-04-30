@@ -4651,3 +4651,28 @@ tr.odd.gradeX td.sorting_1, tr.even.gradeX td.sorting_1, table.display tr.even.g
   width: 100%;
   height: 100%;
 }
+.grid-filter{display: none}.grid-filter th{vertical-align: middle}.grid-filter th{position: relative}
+.grid-filter th input,.grid-filter th select{padding: 5px px;margin: 0 0 0 0px;min-width: 10px;max-width: 100%;width: 100%;font-weight: normal}
+.grid-filter input[type="text"] + .clear-filter{
+    /*background: url('../img/filter-clear.png') */
+    no-repeat;background-size: 16px 16px;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+    display: none
+}
+
+.grid-table .grid-sortable{
+    display: block
+}
+.grid-table .grid-sortable[data-direction="ASC"]{
+    background: url('../img/icon-chevron-up.png') 
+    no-repeat right center;background-size: 12px 12px
+}
+.grid-table .grid-sortable[data-direction="DESC"]{
+    background: url('../img/icon-chevron-down.png') 
+    no-repeat right center;background-size: 12px 12px
+}

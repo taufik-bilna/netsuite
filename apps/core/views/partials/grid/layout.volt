@@ -5,8 +5,8 @@
                 Dynamic Table
             </header-->
             <div class="panel-body">
-                <div class="adv-table">
-                    <table class="display table table-bordered table-striped" id="example" data-widget="grid">
+                <div class="adv-table editable-table ">
+                    <table class="table grid-table table-striped table-hover table-bordered" id="editable-sample" data-widget="grid">
                         <thead>
                         <tr>
 					        {% for name, column in grid.getColumns() %}

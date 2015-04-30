@@ -92,6 +92,7 @@
 				singleItem : true,
 				autoPlay:true
 		  	});
+		  	EditableTable.init();
 		});
 
 		//custom select box

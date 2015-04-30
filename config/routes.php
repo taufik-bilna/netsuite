@@ -83,6 +83,20 @@ $di['router'] = function () {
         'action' => 'index' 
     ));
 
+    $router->add('/users/edit/:int', array(
+        'module' => 'user',
+        'controller' => 'user',
+        'action' => 'edit',
+        'id' => 1 
+    ))->setName("admin-users-edit");
+
+    $router->add('/users/delete/:int', array(
+        'module' => 'user',
+        'controller' => 'user',
+        'action' => 'delete',
+        'id' => 1 
+    ))->setName("admin-users-delete");
+
     $router->removeExtraSlashes(true);
 
     return $router;

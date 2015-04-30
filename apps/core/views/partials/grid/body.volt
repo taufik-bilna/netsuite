@@ -6,6 +6,6 @@
         </tr>
     {% endfor %}
 {% else %}
-elsenyah
+	{# partial(grid.getPaginatorView(), ['grid': grid]) #}
 {% endif %}
 </tbody>

@@ -22,7 +22,7 @@ abstract class AbstractInput extends AbstractElement implements ElementInterface
      */
     public function getDefaultAttributes()
     {
-        return array_merge(parent::getDefaultAttributes(), ['type' => $this->getInputType()]);
+        return array_merge(parent::getDefaultAttributes(),   ['type' => $this->getInputType()]);
     }
 
     /**
@@ -32,7 +32,7 @@ abstract class AbstractInput extends AbstractElement implements ElementInterface
      */
     public function getHtmlTemplate()
     {
-        return $this->getOption('htmlTemplate', '<input' . $this->_renderAttributes() . ' value="%s">');
+        return $this->getOption('htmlTemplate', '<input' . $this->_renderAttributes() . ' value="%s"><div class="clear-filter"><i class="icon-remove"></i></div>');
     }
 
     /**
