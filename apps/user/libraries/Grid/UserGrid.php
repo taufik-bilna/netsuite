@@ -1,9 +1,9 @@
 <?php
 
-namespace Ns\Dashboard\Libraries\Grid;
+namespace Ns\User\Libraries\Grid;
 
-use Ns\Dashboard\Models\Admin\AdminUsers;
-use Ns\Dashboard\Models\Admin\AdminRoles as Roles;
+use Ns\User\Models\Admin\AdminUsers;
+use Ns\User\Models\Admin\AdminRoles as Roles;
 use Phalcon\Mvc\Model\Query\Builder;
 use Ns\Core\Libraries\Grid\GridItem;
 use Ns\Core\Libraries\Grid\AbstractGrid;
@@ -67,10 +67,9 @@ class UserGrid extends AbstractGrid
     {
     	$builder = new Builder();
     	$builder
-    		->from(['u' => 'Ns\Dashboard\Models\Admin\AdminUsers'])
-    		//->addFrom('Ns\Dashboard\Models\Admin\AdminUsers', 'u')
+    		->from(['u' => 'Ns\User\Models\Admin\AdminUsers'])
     		->columns(['u.*', 'r.*'])
-    		->leftJoin('Ns\Dashboard\Models\Admin\AdminRoles', 'u.admin_role_id = r.role_id', 'r')
+    		->leftJoin('Ns\User\Models\Admin\AdminRoles', 'u.admin_role_id = r.role_id', 'r')
     		->orderBy('u.id DESC');
 
     	return $builder;

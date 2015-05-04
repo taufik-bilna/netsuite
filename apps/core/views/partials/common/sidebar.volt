@@ -4,7 +4,7 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
                   <li>
-                      <a class="active" href="index.html">
+                      <a class="active" href="/dashboard/">
                           <i class="icon-dashboard"></i>
                           <span>Dashboard</span>
                       </a>
@@ -37,7 +37,7 @@
                       </ul>
                   </li> -->
 
-                  <li class="sub-menu">
+                  <!-- <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="icon-cogs"></i>
                           <span>Components</span>
@@ -58,7 +58,7 @@
                           <li><a  href="form_component.html">Users</a></li>
                           <li><a  href="advanced_form_components.html">Roles</a></li>
                       </ul>
-                  </li>
+                  </li> -->
                   <!--<li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="icon-th"></i>
@@ -130,28 +130,22 @@
                   </li> -->
 
                   <!--multi level menu start-->
-                  <!-- <li class="sub-menu">
+                  <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="icon-sitemap"></i>
-                          <span>Multi level Menu</span>
+                          <span>System</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="javascript:;">Menu Item 1</a></li>
+                          <li><a href="javascript:;">Configuration</a></li>
                           <li class="sub-menu">
-                              <a  href="boxed_page.html">Menu Item 2</a>
+                              <a href="javascript:;">Permission</a>
                               <ul class="sub">
-                                  <li><a  href="javascript:;">Menu Item 2.1</a></li>
-                                  <li class="sub-menu">
-                                      <a  href="javascript:;">Menu Item 3</a>
-                                      <ul class="sub">
-                                          <li><a  href="javascript:;">Menu Item 3.1</a></li>
-                                          <li><a  href="javascript:;">Menu Item 3.2</a></li>
-                                      </ul>
-                                  </li>
+                                  <li><a href="users">Users</a></li>
+                                  <li><a href="roles">Roles</a></li>
                               </ul>
                           </li>
                       </ul>
-                  </li> -->
+                  </li>
                   <!--multi level menu end-->
 
               </ul>

@@ -97,6 +97,12 @@ $di['router'] = function () {
         'id' => 1 
     ))->setName("admin-users-delete");
 
+    $router->add('/users', array(
+        'module' => 'user',
+        'controller' => 'index',
+        'action' => 'index' 
+    ));
+
     $router->removeExtraSlashes(true);
 
     return $router;

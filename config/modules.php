@@ -4,7 +4,7 @@ use Phalcon\Loader;
 /**
  * Register application modules
  */
-$modulesPath = ['core', 'dashboard'];
+$modulesPath = ['core', 'dashboard', 'user'];
 
 foreach($modulesPath as $module)
 {
@@ -27,6 +27,7 @@ $loader->registerNamespaces(array(
     'Ns\Dashboard\Controllers'   => __DIR__ . '/../apps/dashboard/controllers/',
     'Ns\Dashboard\Models'        => __DIR__ . '/../apps/dashboard/models/',
     'Ns\Dashboard\Libraries'     => __DIR__ . '/../apps/dashboard/libraries/',
+    'Ns\Dashboard\Plugin'      => __DIR__ . '/../apps/dashboard/plugin/',
 ));
 
 $loader->register();
