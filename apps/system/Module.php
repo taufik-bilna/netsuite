@@ -1,6 +1,6 @@
 <?php
 
-namespace Ns\Dashboard;
+namespace Ns\System;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -29,11 +29,11 @@ class Module implements ModuleDefinitionInterface
         $loader = new Loader();
 
         $loader->registerNamespaces(array(
-            'Ns\Dashboard\Controllers' => __DIR__ . '/controllers/',
-            'Ns\Dashboard\Models'      => __DIR__ . '/models/',
-            'Ns\Dashboard\Libraries'   => __DIR__ . '/libraries/',
-            'Ns\Dashboard\Helpers'     => __DIR__ . '/helpers/',
-            'Ns\Dashboard\Plugin'      => __DIR__ . '/plugin/',
+            'Ns\System\Controllers' => __DIR__ . '/controllers/',
+            'Ns\System\Models'      => __DIR__ . '/models/',
+            'Ns\System\Libraries'   => __DIR__ . '/libraries/',
+            'Ns\System\Helpers'     => __DIR__ . '/helpers/',
+            'Ns\System\Plugin'      => __DIR__ . '/plugin/',
         ));
 
         $loader->register();
@@ -80,7 +80,7 @@ class Module implements ModuleDefinitionInterface
 //            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin);
             
             $dispatcher = new Dispatcher;
-            $dispatcher->setDefaultNamespace("Ns\Dashboard\Controllers");
+            $dispatcher->setDefaultNamespace("Ns\System\Controllers");
             $dispatcher->setEventsManager($eventsManager);
             
             return $dispatcher;

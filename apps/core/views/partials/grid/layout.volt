@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
-            <!--header class="panel-heading">
-                Dynamic Table
-            </header-->
+            <header class="panel-heading">
+                {{ grid.getGridTitle() }}
+            </header>
             <div class="panel-body">
                 <div class="adv-table editable-table ">
                     <table class="table grid-table table-striped table-hover table-bordered" id="editable-sample" data-widget="grid">

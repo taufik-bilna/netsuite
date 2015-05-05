@@ -104,4 +104,19 @@ debug($modules);die;
         $di->set('cacheData', $dummyCache);
         $di->set('modelsCache', $dummyCache);
     }
+
+    /**
+     * Init Component Element
+     *
+     * @param DI     $di     Dependency Injection.
+     * @param Config $config Config object
+     *
+     * @return void  
+     */
+    protected function _initComponent($di, $config)
+    {
+        $di->set('elements', function(){
+            return new User\Elements();
+        });
+    }
 }

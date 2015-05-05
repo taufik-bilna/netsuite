@@ -4,7 +4,7 @@ use Phalcon\Loader;
 /**
  * Register application modules
  */
-$modulesPath = ['core', 'dashboard', 'user'];
+$modulesPath = ['core', 'dashboard', 'system', 'netsuite'];
 
 foreach($modulesPath as $module)
 {

@@ -57,7 +57,7 @@
                   </div>
               </div>
               <!--state overview end-->
-              {{ grid.render() }}
+              {# grid.render() #}
               <div class="row">
                   <div class="col-lg-8">
                       

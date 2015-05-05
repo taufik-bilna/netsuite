@@ -3,12 +3,12 @@
           <div id="sidebar"  class="nav-collapse ">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
-                  <li>
-                      <a class="active" href="/dashboard/">
+                  <!-- <li>
+                      <a class="sub-menu" href="/dashboard/">
                           <i class="icon-dashboard"></i>
                           <span>Dashboard</span>
                       </a>
-                  </li>
+                  </li> -->
 
                   <!-- <li class="sub-menu">
                       <a href="javascript:;" >
@@ -130,22 +130,23 @@
                   </li> -->
 
                   <!--multi level menu start-->
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
+                  {{ elements.getMenu() }}
+                  <!-- <li class="sub-menu">
+                      <a href="javascript:;" class="active">
                           <i class="icon-sitemap"></i>
                           <span>System</span>
                       </a>
                       <ul class="sub">
                           <li><a href="javascript:;">Configuration</a></li>
                           <li class="sub-menu">
-                              <a href="javascript:;">Permission</a>
+                              <a class="active" href="javascript:;">Permission</a>
                               <ul class="sub">
-                                  <li><a href="users">Users</a></li>
+                                  <li class="active"><a href="users">Users</a></li>
                                   <li><a href="roles">Roles</a></li>
                               </ul>
                           </li>
                       </ul>
-                  </li>
+                  </li> -->
                   <!--multi level menu end-->
 
               </ul>

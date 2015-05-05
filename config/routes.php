@@ -98,8 +98,31 @@ $di['router'] = function () {
     ))->setName("admin-users-delete");
 
     $router->add('/users', array(
-        'module' => 'user',
-        'controller' => 'index',
+        'namespace' => 'Ns\System\Controllers\Permission',
+        'module' => 'system',
+        'controller' => 'users',
+        'action' => 'index' 
+    ));
+
+    $router->add('/roles', array(
+        'namespace' => 'Ns\System\Controllers\Permission',
+        'module' => 'system',
+        'controller' => 'roles',
+        'action' => 'index' 
+    ));
+
+    $router->add('/roles/edit/:int', array(
+        'namespace' => 'Ns\System\Controllers\Permission',
+        'module' => 'system',
+        'controller' => 'roles',
+        'action' => 'edit',
+        'id' => 1 
+    ))->setName("admin-roles-edit");
+
+    $router->add('/import', array(
+        //'namespace' => 'Ns\Netsuite\Controllers',
+        'module' => 'netsuite',
+        'controller' => 'import',
         'action' => 'index' 
     ));
 

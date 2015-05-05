@@ -7,7 +7,7 @@
     <meta name="keyword" content="Netsuite Admin">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Netsuite Admin</title>
+    <title>Netsuite Admin | Users</title>
 
 	<!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +42,6 @@
 		<!--header end-->
 		<!--sidebar start-->
 		{{ partial('../../core/views/partials/common/sidebar') }}
-		{# elements.getMenu() #}
 		<!--sidebar end-->
 
 		<?php echo $this->getContent() ?>

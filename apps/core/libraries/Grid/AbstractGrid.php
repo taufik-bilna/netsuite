@@ -43,6 +43,13 @@ class AbstractGrid
      */
     protected $_columns;
 
+    /**
+     * Grid title.
+     *
+     * @var string
+     */
+    protected $_gridTitle;
+
 	/**
      * Create grid.
      *
@@ -76,6 +83,16 @@ class AbstractGrid
         	$this->_response = $this->getDI()->getResponse();
         	$this->_response->setContent($this->render($this->getTableBodyView()));
         }
+    }
+
+    /**
+     * Get grid title.
+     *
+     * @return string
+     */
+    public function getGridTitle()
+    {
+        return $this->_gridTitle;
     }
 
 	/**
