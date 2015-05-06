@@ -3,7 +3,7 @@
     	{% if column['output_action'] is defined %}
             {{ column['output_action'](item, grid.getDI()) }}
         {% else %}
-            {{ item[columnName] }}
+            {{ item[column['colname']] }}
         {% endif %}
     </td>
 {% endfor %}

@@ -126,6 +126,34 @@ $di['router'] = function () {
         'action' => 'index' 
     ));
 
+    $router->add('/import/view/:int', array(
+        'module' => 'netsuite',
+        'controller' => 'import',
+        'action' => 'view',
+        'id' => 1 
+    ))->setName("admin-import-status-view");
+
+    $router->add('/import/delete/:int', array(
+        'module' => 'netsuite',
+        'controller' => 'import',
+        'action' => 'delete',
+        'id' => 1 
+    ))->setName("admin-import-status-delete");
+
+    $router->add('/export', array(
+        //'namespace' => 'Ns\Netsuite\Controllers',
+        'module' => 'netsuite',
+        'controller' => 'export',
+        'action' => 'index' 
+    ));
+
+    $router->add('/export/delete/:int', array(
+        'module' => 'netsuite',
+        'controller' => 'export',
+        'action' => 'delete',
+        'id' => 1 
+    ))->setName("admin-export-status-delete");
+
     $router->removeExtraSlashes(true);
 
     return $router;

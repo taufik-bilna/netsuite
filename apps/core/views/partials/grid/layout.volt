@@ -6,6 +6,7 @@
             </header>
             <div class="panel-body">
                 <div class="adv-table editable-table ">
+                	<div class="dataTables_info" id="example_info">Total {{ grid.getTotalCount() }} records found</div>
                     <table class="table grid-table table-striped table-hover table-bordered" id="editable-sample" data-widget="grid">
                         <thead>
                         <tr>

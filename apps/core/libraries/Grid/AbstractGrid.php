@@ -71,7 +71,7 @@ class AbstractGrid
         $paginator = new QueryBuilder(
             [
                 "builder" => $source,
-                "limit" => 1,
+                "limit" => 60,
                 "page" => json_decode(base64_decode($this->getDI()->getRequest()->getQuery('page', null, 1)), true)
             ]
         );
@@ -216,17 +216,21 @@ class AbstractGrid
      */
     public function addTextColumn($id, $label, array $params = [])
     {
-        $this->_columns[$id] = $this->_getDefaultColumnParams($params, $label);
+        $randId = $id;
+        if( isset($this->_columns[$id]) )
+            $randId = $id.rand();
 
-        if (!empty($this->_columns[$id]['filter'])) {
-            $this->_columns[$id]['filter'] = new Text($id);
+        $this->_columns[$randId] = $this->_getDefaultColumnParams($id, $params, $label);
+
+        if (!empty($this->_columns[$randId]['filter'])) {
+            $this->_columns[$randId]['filter'] = new Text($id);
         }
         return $this;
     }
 
     public function addDateRangeColumn($id, $label, array $params = [])
     {
-        $this->_columns[$id] = $this->_getDefaultColumnParams($params, $label);
+        $this->_columns[$id] = $this->_getDefaultColumnParams($id, $params, $label);
         
         if (!empty($this->_columns[$id]['filter'])) {
             $this->_columns[$id]['filter'] = new DateRange($id);
@@ -251,7 +255,7 @@ class AbstractGrid
         array $params = []
     )
     {
-        $this->_columns[$id] = $this->_getDefaultColumnParams($params, $label);
+        $this->_columns[$id] = $this->_getDefaultColumnParams($id, $params, $label);
 
         if (!empty($this->_columns[$id]['filter']))
         {
@@ -290,11 +294,12 @@ class AbstractGrid
      *
      * @return array
      */
-    protected function _getDefaultColumnParams($params, $label)
+    protected function _getDefaultColumnParams($colname, $params, $label)
     {
         return array_merge(
             [
                 'label' => $label,
+                'colname' => $colname,
                 'type' => Column::BIND_PARAM_INT,
                 'filter' => true,
                 'sortable' => true
@@ -331,6 +336,26 @@ class AbstractGrid
     public function hasActions()
     {
         return true;
+    }
+
+    /**
+     * Get items count per page.
+     *
+     * @return int
+     */
+    public function getItemsCountPerPage()
+    {
+        return 25;
+    }
+
+    /**
+     * Get total items count.
+     *
+     * @return int
+     */
+    public function getTotalCount()
+    {
+        return $this->_paginator->total_items;
     }
 
     /**

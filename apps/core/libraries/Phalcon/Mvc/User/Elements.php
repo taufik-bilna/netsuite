@@ -105,9 +105,10 @@ class Elements extends Component
 
 	            		$clsAction = '';
 	            		if( strtolower($key) == strtolower($namespaceNameArr[$nsMenu]) ) $clsAction = 'class="active"';
-//debug($key);
-//debug($namespaceNameArr[$nsMenu]);
-	            		echo '<li '.$class.'><a href="'.$value['action'].'" '.$clsAction.'>'.$value['caption'].'</a>';
+                        elseif( strtolower($key) == strtolower($controllerName) ) $clsAction = 'class="active"';
+//echo ($key);
+//echo ($controllerName);
+	            		echo '<li '.$class.$clsAction.'><a href="'.$value['action'].'" '.$clsAction.'>'.$value['caption'].'</a>';
 
 	            		if( isset($value['sub-menu']) )
 	            		{	

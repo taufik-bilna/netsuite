@@ -247,4 +247,22 @@ class Message extends Model
             )
         ));*/
     }
+
+    /**
+     * Independent Column Mapping.
+     */
+    /*public function columnMap()
+    {
+        return array(
+            'message_id' => 'message_id', 
+            'queue_id' => 'queue_id', 
+            'handle' => 'handle', 
+            'body' => 'body',
+            'md5' => 'md5',
+            'timeout' => 'timeout',
+            'created' => 'created',
+            'priority'=> 'priority',
+            'body' => 'action' 
+        );
+    }*/
 }

@@ -6,9 +6,9 @@ use Phalcon\Mvc\Model\Query\Builder;
 use Ns\Core\Libraries\Grid\GridItem;
 use Ns\Core\Libraries\Grid\AbstractGrid;
 
-class ImportGrid extends AbstractGrid
+class ExportGrid extends AbstractGrid
 {
-    protected $_gridTitle = 'Import Status';
+    protected $_gridTitle = 'Export Status';
 
     /**
      * Initialize grid columns.
@@ -34,9 +34,8 @@ class ImportGrid extends AbstractGrid
     public function getItemActions(GridItem $item)
     {
         return [
-            'View' => ['href' => ['for' => 'admin-import-status-view', 'id' => $item['message_id']]],
             'Delete' => [
-                'href' => ['for' => 'admin-import-status-delete', 'id' => $item['message_id']],
+                'href' => ['for' => 'admin-export-status-delete', 'id' => $item['message_id']],
                 'attr' => ['class' => 'grid-action-delete']
             ]
         ];
@@ -56,7 +55,7 @@ class ImportGrid extends AbstractGrid
     		->from(['m' => 'Ns\Netsuite\Models\Message'])
             //->columns(['m.message_id, SUBSTRING(m.body, 1, LOCATE(\'|\', m.body ) -1) as action, SUBSTRING(m.body, LOCATE(\'|\', m.body ) + 1, CHAR_LENGTH(m.body)) as entity_id, m.created'])
     		->columns(['m.message_id, m.action, m.entity_id, m.created'])
-            ->where('queue_id = :queue_id:', array('queue_id'=>1))
+            ->where('queue_id = :queue_id:', array('queue_id'=> 2))
     		->orderBy('m.message_id DESC');
 
     	return $builder;
