@@ -154,6 +154,28 @@ $di['router'] = function () {
         'id' => 1 
     ))->setName("admin-export-status-delete");
 
+    $router->add('/apilog', array(
+        'namespace' => 'Ns\Netsuite\Controllers\Log',
+        'module' => 'netsuite',
+        'controller' => 'api',
+        'action' => 'index' 
+    ));
+
+    $router->add('/changelog', array(
+        'namespace' => 'Ns\Netsuite\Controllers\Log',
+        'module' => 'netsuite',
+        'controller' => 'changelog',
+        'action' => 'index' 
+    ));
+
+    $router->add('/changelog/delete/:int', array(
+        'namespace' => 'Ns\Netsuite\Controllers\Log',
+        'module' => 'netsuite',
+        'controller' => 'changelog',
+        'action' => 'delete',
+        'id' => 1 
+    ))->setName("admin-changelog-delete");
+
     $router->removeExtraSlashes(true);
 
     return $router;

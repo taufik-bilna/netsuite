@@ -45,7 +45,7 @@ class Elements extends Component
         	'sub-menu' => array(
         		'caption' => 'Netsuite',
         		'action'  => null,
-        		'icon'    => 'icon-sitemap',
+        		'icon'    => 'icon-cogs',
         		'sub'	  => array(
         			'import' => array(
         				'caption' => 'Import Status',
@@ -54,7 +54,25 @@ class Elements extends Component
         			'export' => array(
         				'caption' => 'Export Status',
         				'action'  => 'export'
-        			)
+        			),
+                    'log' => array(
+                        'caption' => 'Log',
+                        'action'  => 'javascript:;',
+                        'sub-menu'=> array(
+                            'api' => array(
+                                'caption' => 'API Log',
+                                'action'  => 'apilog'
+                            ),
+                            'changelog' => array(
+                                'caption' => 'Change Log',
+                                'action'  => 'changelog'
+                            ),
+                            'general' => array(
+                                'caption' => 'General Log',
+                                'action'  => 'general-log'
+                            )
+                        )
+                    )
         		)
         	)
         )

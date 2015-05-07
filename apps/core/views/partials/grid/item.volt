@@ -1,7 +1,7 @@
 {% for columnName, column in grid.getColumns() %}
     <td>
     	{% if column['output_action'] is defined %}
-            {{ column['output_action'](item, grid.getDI()) }}
+            {{ column['output_action'](item, grid.getDI(), column) }}
         {% else %}
             {{ item[column['colname']] }}
         {% endif %}

@@ -14,7 +14,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     padding: 0px !important;
     margin: 0px !important;
-    font-size:13px;
+    font-size: 11px;
 }
 
 ul li {
@@ -165,7 +165,7 @@ a, a:hover, a:focus {
 /*sidebar navigation*/
 
 #sidebar {
-    width: 210px;
+    width: 190px;
     height: 100%;
     position: fixed;
     background: #2a3542;
@@ -238,7 +238,7 @@ ul.sidebar-menu li ul.sub li:last-child{
 }
 
 ul.sidebar-menu li ul.sub li a {
-    font-size: 12px;
+    font-size: 11px;
     padding: 6px 0;
     line-height: 35px;
     height: 35px;
@@ -280,7 +280,7 @@ ul.sidebar-menu li a{
     text-decoration: none;
     display: block;
     padding: 15px 0 15px 10px;
-    font-size: 12px;
+    font-size: 11px;
     outline: none;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
@@ -349,7 +349,7 @@ ul.sidebar-menu li a.active i {
 .wrapper {
     display: inline-block;
     margin-top: 60px;
-    padding: 15px;
+    padding: 10px 10px 10px 5px;
     width: 100%;
 }
 
