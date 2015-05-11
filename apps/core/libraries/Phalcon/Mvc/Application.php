@@ -18,21 +18,34 @@ trait Application
      */
     protected function _initDatabase($di, $config)
     {
-    	$di['db'] = function () use ($config) {
-            
-            $adapter = '\Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
-        	/** @var Pdo $connection */
-        	$connection = new $adapter(
-	            [
-	                "host" => $config->database->host,
-	                "port" => $config->database->port,
-	                "username" => $config->database->username,
-	                "password" => $config->database->password,
-	                "dbname" => $config->database->dbname,
-	            ]
-	        );
-            return $connection;
-        };
+    	if( $config->database->adapter == 'mongo' )
+        {
+            $di['db'] = function () use ($config) {
+                
+                $adapter = '\Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
+            	/** @var Pdo $connection */
+            	$connection = new $adapter(
+    	            [
+    	                "host" => $config->database->host,
+    	                "port" => $config->database->port,
+    	                "username" => $config->database->username,
+    	                "password" => $config->database->password,
+    	                "dbname" => $config->database->dbname,
+    	            ]
+    	        );
+                return $connection;
+            };
+        }else{
+            $di['mongo'] = function () use ($config) {
+                
+                $mongo = new \MongoClient("mongodb://" .
+                   $config->database->username . ":"
+                   $config->database->password . "@" . 
+                   $config->database->host,array("db" => $config->database->dbname)
+                );
+                return $mongo->selectDb($config->database->dbname);
+            };
+        }
     }
 
     /**
