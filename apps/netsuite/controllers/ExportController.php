@@ -19,9 +19,9 @@ class ExportController extends CoreController
     {
     	try{
     		$grid = new ExportGrid($this->view);
-            if ($response = $grid->getResponse()) {
+            /*if ($response = $grid->getResponse()) {
                 return $response;
-            }
+            }*/
     	}catch(\Exception $e){
             throw $e;
         }

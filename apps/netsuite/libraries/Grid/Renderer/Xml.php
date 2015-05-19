@@ -2,11 +2,11 @@
 
 namespace Ns\Netsuite\Libraries\Grid\Renderer;
 
-use Ns\Core\Libraries\Grid\GridItem;
+//use Ns\Core\Libraries\Grid\GridItem;
 
 class Xml
 {
-	public static function render(GridItem $item, $di, $column)
+	public static function render($item, $column)
 	{
 		$value = $item[$column['colname']];
 

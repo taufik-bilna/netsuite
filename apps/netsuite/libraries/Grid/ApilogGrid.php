@@ -9,8 +9,30 @@ use Ns\Netsuite\Libraries\Grid\Renderer\Xml;
 
 class ApilogGrid extends AbstractGrid
 {
-    protected $_gridTitle = 'API Log';
+    /**
+     * Grid id.
+     *
+     * @var string
+     */
+    protected $_id = 'example-data-table';
 
+    /**
+     * Grid identifier.
+     *
+     * @var string
+     */
+    protected $identifier = 'grid';
+
+    /**
+     * Rerieve grid URL
+     *
+     * @return string
+     */
+    public function getGridUrl()
+    {
+        return $this->getDI()->getUrl()->get('apilog');
+    }
+    
     /**
      * Initialize grid columns.
      *
@@ -22,22 +44,22 @@ class ApilogGrid extends AbstractGrid
             ->addTextColumn('id', 'ID')
             ->addTextColumn('request', 'Request',
                 [
-                    'output_action' =>
-                        function (GridItem $item, $di, $column) {
-                            return Xml::render($item, $di, $column);
+                    'renderer' =>
+                        function ($item, $column) {
+                            return Xml::render($item, $column);
                         }
                 ]
              )
             ->addTextColumn('response', 'Response',
                 [
-                    'output_action' =>
-                        function (GridItem $item, $di, $column) {
-                            return Xml::render($item, $di, $column);
+                    'renderer' =>
+                        function ($item, $column) {
+                            return Xml::render($item, $column);
                         }
                 ]
              )
             ->addTextColumn('operation', 'Operation')
-            ->addDateRangeColumn('call_date', 'Call Date', ['use_between' => true, 'use_like' => false]);
+            ->addDateRangeColumn('call_date', 'Call Date');
     }
 
     /**

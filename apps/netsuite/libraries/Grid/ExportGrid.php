@@ -8,7 +8,29 @@ use Ns\Core\Libraries\Grid\AbstractGrid;
 
 class ExportGrid extends AbstractGrid
 {
-    protected $_gridTitle = 'Export Status';
+    /**
+     * Grid id.
+     *
+     * @var string
+     */
+    protected $_id = 'example-data-table';
+
+    /**
+     * Grid identifier.
+     *
+     * @var string
+     */
+    protected $identifier = 'grid';
+
+    /**
+     * Rerieve grid URL
+     *
+     * @return string
+     */
+    public function getGridUrl()
+    {
+        return $this->getDI()->getUrl()->get('export');
+    }
 
     /**
      * Initialize grid columns.

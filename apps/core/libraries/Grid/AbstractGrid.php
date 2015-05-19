@@ -8,14 +8,10 @@ use Phalcon\Paginator\Adapter\QueryBuilder;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\DI;
 use Phalcon\DiInterface;
-use Phalcon\Db\Column;
-use Ns\Core\Libraries\Form\Element\Text;
-use Ns\Core\Libraries\Form\Element\Select;
-use Ns\Core\Libraries\Form\Element\DateRange;
 
 class AbstractGrid 
 {
-	/**
+	   /**
      * View object.
      *
      * @var View
@@ -30,13 +26,6 @@ class AbstractGrid
     protected $_response;
 
     /**
-     * Paginator.
-     *
-     * @var \stdClass
-     */
-    protected $_paginator;
-
-    /**
      * Grid columns.
      *
      * @var array
@@ -49,53 +38,62 @@ class AbstractGrid
      * @var string
      */
     protected $_gridTitle;
-
-	/**
+	
+    /**
      * Create grid.
      *
      * @param ViewInterface $view View object.
      * @param DIBehaviour   $di   DI object.
      */
-    public function __construct(ViewInterface $view, $di = null)
+    public function __construct(ViewInterface $view)
     {
-    	$this->_view = $view;
-        $this->_view->grid = $this;
+        $this->_view = $view;
+        $this->_id = $this->_id . 'grid';
+        $this->_view->{$this->identifier} = $this;
 
         $source = $this->getSource();
 
         $this->_applyFilter($source);
         $this->_applySorting($source);
+
         /**
          * Paginator.
          */
+        $limit = $this->getDI()->getRequest()->getQuery('iDisplayLength', null, 10);
+        $page = ($this->getDI()->getRequest()->getQuery('iDisplayStart', null, 1) / $limit ) + 1;
         $paginator = new QueryBuilder(
             [
                 "builder" => $source,
-                "limit" => 60,
-                "page" => json_decode(base64_decode($this->getDI()->getRequest()->getQuery('page', null, 1)), true)
+                "limit" => $limit,
+                "page" => $page
             ]
         );
+
         $this->_paginator = $paginator->getPaginate();
 
-        if($this->getDI()->getRequest()->isAjax())
+        if( $this->getDI()->getRequest()->isAjax() )
         {
-        	$view->disable();
-        	$this->_response = $this->getDI()->getResponse();
-        	$this->_response->setContent($this->render($this->getTableBodyView()));
+            $view->disable();
+            $this->_response = $this->getDI()->getResponse();
+            $this->_response->setContentType('application/json', 'UTF-8');
+            $this->_response->setContent(json_encode(
+                array(
+                    "sEcho" => $this->getDI()->getRequest()->getQuery('sEcho', null, 1),
+                    "iTotalRecords" => $this->_paginator->total_items,
+                    "iTotalDisplayRecords" => $this->_paginator->total_items,
+                    "aaData" => $this->getItems()
+                )
+            ));
         }
+
+    }
+
+    public function getId()
+    {
+        return $this->_id;
     }
 
     /**
-     * Get grid title.
-     *
-     * @return string
-     */
-    public function getGridTitle()
-    {
-        return $this->_gridTitle;
-    }
-
-	/**
      * Apply filter data on array.
      *
      * @param Builder $source Data.
@@ -104,75 +102,43 @@ class AbstractGrid
      */
     protected function _applyFilter(Builder &$source)
     {
-        $data = json_decode(base64_decode($this->_getParam('filter')), true);
-        $i=0;
-		foreach ($this->getColumns() as $name => $column)
-		{
-            if($i=0) $where = 'where';
-            else $where = 'andWhere';
-            // Can't use empty(), coz value can be '0'.
-            if (!isset($data[$name]) || $data[$name] == '')
+        $sSearch = $this->getDI()->getRequest()->getQuery('sSearch');
+        if( isset($sSearch) && $sSearch != '' )
+        {
+            foreach ($this->getColumns() as $key => $column)
             {
-                continue;
-            }
-
-            $conditionLike = !isset($column['use_like']) || $column['use_like'];
-            $conditionBetween = !isset($column['use_between']) || $column['use_between'];
-
-            if (!empty($column['use_having']))
-            {
-                if ($conditionLike)
+                if($column['type'] == 'date-range' ) continue;                
+                $alias = str_replace('.', '_', $column['colname']);
+                $bSearchable = 'bSearchable_'.$key;
+                $$bSearchable = $this->getDI()->getRequest()->getQuery($bSearchable); 
+                if( isset($$bSearchable) && $$bSearchable == "true" )
                 {
-                    $value = '%' . $data[$name] . '%';
-                } else {
-                    $value = $data[$name];
+                    $source->orWhere($column['colname'] . ' LIKE :' . $alias . ':', [$alias => '%' . $sSearch . '%']);
                 }
-                if (isset($column['type'])) {
-                    $value = $this->getDI()
-                        ->getDb()
-                        ->getInternalHandler()
-                        ->quote($value, $column['type']);
-                }
-                if ($conditionLike) {
-                    $source->having($name . ' LIKE ' . $value);
-                } else {
-                    $source->having($name . ' = ' . $value);
-                }
-            }elseif(!empty($column['use_between'])){ 
-
-                $from = '31-12-1970';
-                $to = '31-12-9999';
-                foreach($data[$name] as $between){
-                    if(isset($between['from']))
-                        $from = $between['from'];
-                    if(isset($between['to']))
-                        $to = $between['to'];
-                }
-                $arrFrom = explode("/", $from);
-                $arrTo = explode("/", $to);
-
-                //$source->$where($name . ' > :' .$alias . '_from AND ' . $name . ' < :' .$alias . '_to', [$alias.'_from' => $from, $alias.'_to' => $to]);
-                $source->$where($name . ' > :' .$alias . '_from:', [$alias.'_from' => $arrFrom[2].'-'.$arrFrom[0].'-'.$arrFrom[1]]);
-                $source->$where($name . ' < :' .$alias . '_to:', [$alias.'_to' => $arrTo[2].'-'.$arrTo[0].'-'.$arrTo[1]]);
-
-            }else {
-            	$bindType = null;
-                $alias = str_replace('.', '_', $name);
-                if (isset($column['type'])) {
-                    $bindType = [$alias => $column['type']];
-                }
-                if ($conditionLike) {
-                    //$source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%'], $bindType);
-                    $source->$where($name . ' LIKE :' . $alias . ':', [$alias => '%' . $data[$name] . '%']);
-                } else{                      
-                    $source->$where($name . ' = :' . $alias . ':', [$alias => $data[$name]], $bindType);
-                }
-
             }
-            $i++;
-        }        
+        }
+        foreach ($this->getColumns() as $key => $column)
+        {
+            $alias = str_replace('.', '_', $column['colname']);
+            $sSearch = 'sSearch_'.$key;
+            $bSearchable = 'bSearchable_'.$key;
+            $$bSearchable = $this->getDI()->getRequest()->getQuery($bSearchable);
+            $$sSearch = $this->getDI()->getRequest()->getQuery($sSearch);
+
+            if( isset($$bSearchable) && $$bSearchable == "true" && $$sSearch != '' && $column['type'] != 'date-range' )
+            {
+                $source->where($column['colname'] . ' LIKE :' . $alias . ':', [$alias => '%' . $$sSearch . '%']);
+            }elseif( isset($$bSearchable) && $$bSearchable == "true" && $$sSearch != '' && $column['type'] == 'date-range' ){
+                $dateRangeArr = explode("~", trim($$sSearch));
+                if( !empty($dateRangeArr[0]) )
+                    $source->where($column['colname'] . ' > :' . $alias . '_from:', [$alias.'_from' => $dateRangeArr[0]]);
+                if( !empty($dateRangeArr[1]) )
+                    $source->where($column['colname'] . ' < :' . $alias . '_to:', [$alias.'_to' => $dateRangeArr[0]]);
+            }
+        }
+
     }
-    
+
     /**
      * Apply sorting data on array.
      *
@@ -182,8 +148,25 @@ class AbstractGrid
      */
     protected function _applySorting(Builder &$source)
     {
-        $sort = json_decode(base64_decode($this->_getParam('sort')),true);
-        $direction = json_decode(base64_decode($this->_getParam('direction', 'DESC')), true);
+        $iSortCol_0 = $this->getDI()->getRequest()->getQuery('iSortCol_0');
+        if( isset($iSortCol_0) )
+        {
+            $iSortingCols = $this->getDI()->getRequest()->getQuery('iSortingCols');
+
+            for( $i=0; $i<intval($iSortingCols); $i++ )
+            {
+                $iSortCol = intval($this->getDI()->getRequest()->getQuery('iSortCol_'.$i));
+                $bSortable = $this->getDI()->getRequest()->getQuery('bSortable_'.intval($iSortCol));
+                if( $bSortable == "true" )
+                {
+                    $sort = $this->_columns[$iSortCol]['colname'];
+                    $sSortDir = $this->getDI()->getRequest()->getQuery('sSortDir_'.$i);
+                    $direction = ($sSortDir =='asc' ? 'asc' : 'desc');
+                    $source->orderBy(sprintf('%s %s', $sort, $direction));
+                }
+            }
+        }
+
         // Additional checks.
         if (!$sort || ($direction != 'DESC' && $direction != 'ASC')) {
             return;
@@ -191,18 +174,38 @@ class AbstractGrid
 
         $source->orderBy(sprintf('%s %s', $sort, $direction));
     }
-    
+
     /**
-     * Get request param.
+     * Get current grid items.
      *
-     * @param string $name    Param name.
-     * @param mixed  $default Default value for param.
-     *
-     * @return mixed
+     * @return AbstractModel[]
      */
-    protected function _getParam($name, $default = null)
+    public function getItems()
     {
-        return $this->getDI()->getRequest()->get($name, null, $default);
+        $items = [];
+        foreach ($this->_paginator->items as $item) {
+            //$keys = array_keys($item->toArray());
+            //$values = array_values($item->toArray());
+            $data = $item->toArray();
+
+            foreach( $this->getColumns() as $column)
+            {
+                if( isset($column['renderer']) )
+                {
+                    $data[$column['colname']] = $column['renderer']($item->toArray(), $column);
+                }
+            }
+            $items[] = array_values($data);
+        }
+
+        return $items;
+    }
+
+    public function addDateRangeColumn($id, $label, array $params = [])
+    {
+        $this->_columns[] = $this->_getDefaultColumnParams($id, array_merge($params,['type'=>'date-range']), $label);
+
+        return $this;
     }
 
     /**
@@ -216,64 +219,27 @@ class AbstractGrid
      */
     public function addTextColumn($id, $label, array $params = [])
     {
-        $randId = $id;
-        if( isset($this->_columns[$id]) )
-            $randId = $id.rand();
+        $this->_columns[] = $this->_getDefaultColumnParams($id, array_merge($params,['type'=>'text']), $label);
 
-        $this->_columns[$randId] = $this->_getDefaultColumnParams($id, $params, $label);
-
-        if (!empty($this->_columns[$randId]['filter'])) {
-            $this->_columns[$randId]['filter'] = new Text($id);
-        }
         return $this;
     }
 
-    public function addDateRangeColumn($id, $label, array $params = [])
+    public function addSelectColumn($id, $label, $options, array $params = [])
     {
-        $this->_columns[$id] = $this->_getDefaultColumnParams($id, $params, $label);
-        
-        if (!empty($this->_columns[$id]['filter'])) {
-            $this->_columns[$id]['filter'] = new DateRange($id);
+        $values = [];
+        foreach ($options as $key => $value) {
+            $values[] = ['value' => $key, 'label' => $value];
         }
 
-        return $this;
-    }
-    /**
-     * Add column to grid with select filter.
-     *
-     * @param int    $id      Column id.
-     * @param string $label   Column label.
-     * @param array  $options Select options
-     * @param array  $params  Column params.
-     *
-     * @return $this
-     */
-    public function addSelectColumn(
-        $id,
-        $label,
-        array $options,
-        array $params = []
-    )
-    {
-        $this->_columns[$id] = $this->_getDefaultColumnParams($id, $params, $label);
-
-        if (!empty($this->_columns[$id]['filter']))
-        {
-			$element = new Select($id);
-            foreach ($options as $key => $value) {
-                $element->setOption($key, $value);
-            }
-            $this->_columns[$id]['filter'] = $element;
-        }
+        $this->_columns[] = $this->_getDefaultColumnParams(
+            $id, 
+            array_merge($params,['type'=>'select', 'value' => $values]), 
+            $label
+        );
 
         return $this;
     }
 
-    /**
-     * Get grid columns.
-     *
-     * @return array
-     */
     public function getColumns()
     {
         if (!$this->_columns) {
@@ -287,25 +253,39 @@ class AbstractGrid
     }
 
     /**
-     * Set default data to params.
+     * Render grid.
      *
-     * @param array  $params Columns params.
-     * @param string $label  Columns label.
+     * @param string $viewName Name of the view file.
      *
-     * @return array
+     * @return string
      */
-    protected function _getDefaultColumnParams($colname, $params, $label)
+    public function render($viewName = null)
     {
-        return array_merge(
-            [
-                'label' => $label,
-                'colname' => $colname,
-                'type' => Column::BIND_PARAM_INT,
-                'filter' => true,
-                'sortable' => true
-            ],
-            $params
-        );
+        if (!$viewName) {
+            $viewName = $this->getLayoutView();
+        }
+        /** @var View $view */
+        $view = $this->getDI()->get('view');
+        ob_start();
+        $view->partial($viewName, ['grid' => $this]);
+        $html = ob_get_contents();
+        ob_end_clean();
+
+        if ($this->getDI()->getRequest()->isAjax()) {
+            $view->setContent($html);
+        }
+
+        return $html;
+    }
+
+    /**
+     * Get grid view name.
+     *
+     * @return string
+     */
+    public function getLayoutView()
+    {
+        return $this->_resolveView('partials/grid/layout', 'core');
     }
 
     /**
@@ -316,61 +296,6 @@ class AbstractGrid
     public function getTableBodyView()
     {
         return $this->_resolveView('partials/grid/body', 'core');
-    }
-
-    /**
-     * Grid has filter form?
-     *
-     * @return bool
-     */
-    public function hasFilterForm()
-    {
-        return true;
-    }
-
-	/**
-     * Grid has actions?
-     *
-     * @return bool
-     */
-    public function hasActions()
-    {
-        return true;
-    }
-
-    /**
-     * Get items count per page.
-     *
-     * @return int
-     */
-    public function getItemsCountPerPage()
-    {
-        return 25;
-    }
-
-    /**
-     * Get total items count.
-     *
-     * @return int
-     */
-    public function getTotalCount()
-    {
-        return $this->_paginator->total_items;
-    }
-
-    /**
-     * Get grid item view name.
-     *
-     * @return string
-     */
-    public function getItemView()
-    {
-        return $this->_resolveView('partials/grid/item', 'core');
-    }
-
-    public function getPaginatorView()
-    {
-        return $this->_resolveView('partials/grid/paginator', 'core');
     }
 
     /**
@@ -387,27 +312,26 @@ class AbstractGrid
     }
 
     /**
-     * Get grid view name.
+     * Get grid title.
      *
      * @return string
      */
-    public function getLayoutView()
+    public function getGridTitle()
     {
-        return $this->_resolveView('partials/grid/layout', 'core');
+        return $this->_gridTitle;
     }
 
     /**
-     * Get current grid items.
+     * Get request param.
      *
-     * @return AbstractModel[]
+     * @param string $name    Param name.
+     * @param mixed  $default Default value for param.
+     *
+     * @return mixed
      */
-    public function getItems()
+    protected function _getParam($name, $default = null)
     {
-        $items = [];
-        foreach ($this->_paginator->items as $item) {
-            $items[] = new GridItem($this, $item);
-        }
-        return $items;
+        return $this->getDI()->getRequest()->get($name, null, $default);
     }
 
     /**
@@ -421,38 +345,22 @@ class AbstractGrid
     }
 
     /**
-     * Returns response object if grid has something to say =)... (has it's own response).
+     * Set default data to params.
      *
-     * @return null|ResponseInterface
+     * @param array  $params Columns params.
+     * @param string $label  Columns label.
+     *
+     * @return array
      */
-    public function getResponse()
+    protected function _getDefaultColumnParams($colname, $params, $label)
     {
-        return $this->_response;
+        return array_merge(
+            [
+                'label' => $label,
+                'colname' => $colname
+            ],
+            $params
+        );
     }
-
-    /**
-     * Render grid.
-     *
-     * @param string $viewName Name of the view file.
-     *
-     * @return string
-     */
-    public function render($viewName = null)
-    {
-    	if (!$viewName) {
-            $viewName = $this->getLayoutView();
-        }
-        /** @var View $view */
-        $view = $this->getDI()->get('view');
-        ob_start();
-        $view->partial($viewName, ['grid' => $this, 'paginator' => $this->_paginator]);
-        $html = ob_get_contents();
-        ob_end_clean();
-
-        if ($this->getDI()->getRequest()->isAjax()) {
-            $view->setContent($html);
-        }
-
-        return $html;
-    }
+    
 }

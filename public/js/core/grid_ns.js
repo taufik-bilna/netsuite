@@ -25,23 +25,31 @@
                 }
             },
             element: null,
-            
+            url:null,
+            optionalArg: null,
             /**
              * Init grid.
              *
              * @param element Grid element.
              * @param options Grid options.
              */
-            init: function (element, options) {
+            init: function (element, options, optionalArg) {
+                this.optionalArg = optionalArg || 'editable-sample';
                 this.element = element;
                 this.options = $.extend(this.options, options);
-
+//console.log('init grid ns ');
+//console.log(this.element);
+                this.initBaseUrl();
                 this.initPaginator();
                 this.initFilter();
                 this.initSorting();
                 this.initSession();
             },
             
+            initBaseUrl: function () {
+                var $this = this;
+            },
+
             /**
              * Init grid paginator.
              */
@@ -51,13 +59,18 @@
                 if (!paginator.length) {
                     return;
                 }
-
+                //$this.url = $('[data-url]', this.element.parent()).attr('data-url');
+//console.log(paginator);
+//console.log('initpaginator');                
+//console.log($('[data-url]', this.element.parent()).attr('data-url'));
                 $('a', paginator).click(function () {
                     var link = $(this);
                     if (link.parent().hasClass('active')) {
                         return false;
                     }
-
+//console.log(this);                    
+                    //$this.url = $(this).attr('href');
+//console.log($(this).attr('href'));                    
                     $this.setParam('page', link.data('page'));
                     $this.load();
 
@@ -86,10 +99,10 @@
                                     between[$(this).attr("data-between")] = value;
                                     //x[$(this).attr("name")] = between;
                                     x.push(between);
-console.log('xxxxx');
+//console.log('xxxxx');
                                     map[$(this).attr("name")] = x;
                                 }else{
-console.log('cdcdcdcdcd');
+//console.log('cdcdcdcdcd');
                                     map[$(this).attr("name")] = value;
                                 }
                             }
@@ -290,17 +303,21 @@ console.log(value);*/
                 // Request.
                 $.ajax(
                     {
-                        url: window.location.pathname,
+                        url: $('[data-url]', $element).attr('data-url'),//window.location.pathname,
+                        //url: this.url,//window.location.pathname,
                         data: params
                     }
                 ).done(
                     function (html) {
+//console.log('vchsdvc');                        
+//console.log('element '+ $('[data-url]', $element).attr('data-url'));
                         $('tbody', $element).replaceWith(html);
 
                         BilnaNs.widget.grid.initPaginator();
                         BilnaNs.widget.grid.initSession();
 
                         BilnaNs.core.hideLoadingStage();
+                        //this.url = null;
                     }
                 );
             }

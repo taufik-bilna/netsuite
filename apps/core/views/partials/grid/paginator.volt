@@ -13,10 +13,10 @@
         <ul class="pagination">
             {% if paginator.current > 1 %}
                 <li>
-                    <a href="" data-page="1">{{ 'First' }}</a>
+                    <a href="{{ grid.getUrl() }}?" data-page="1">{{ 'First' }}</a>
                 </li>
                 <li>
-                    <a href="" data-page="{{ paginator.before }}">&laquo;</a>
+                    <a href="{{ grid.getUrl() }}?" data-page="{{ paginator.before }}">&laquo;</a>
                 </li>
             {% endif %}
 
@@ -26,16 +26,16 @@
                 {% endif %}
 
                 <li {% if pageIndex is paginator.current %}class="active"{% endif %}>
-                    <a href="?page={{ pageIndex }}" data-page="{{ pageIndex }}">{{ pageIndex }}</a>
+                    <a href="{{ grid.getUrl() }}?page={{ pageIndex }}" data-page="{{ pageIndex }}">{{ pageIndex }}</a>
                 </li>
             {% endfor %}
 
             {% if paginator.current < paginator.total_pages %}
                 <li>
-                    <a href="?page={{ paginator.current + 1 }}" data-page="{{ paginator.current + 1 }}">&raquo;</a>
+                    <a href="{{ grid.getUrl() }}?page={{ paginator.current + 1 }}" data-page="{{ paginator.current + 1 }}">&raquo;</a>
                 </li>
                 <li>
-                    <a href="?page={{ paginator.last }}" data-page="{{ paginator.last }}">{{ 'Last' }}</a>
+                    <a href="{{ grid.getUrl() }}?page={{ paginator.last }}" data-page="{{ paginator.last }}">{{ 'Last' }}</a>
                 </li>
             {% endif %}
         </ul>

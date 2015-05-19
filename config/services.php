@@ -15,7 +15,7 @@ use Phalcon\Mvc\Router\Annotations as RouterAnnotations;
 $di['url'] = function () {
     $url = new UrlResolver();
     //$url->setBaseUri('/api/');
-    $url->setBaseUri('/');
+    $url->setBaseUri('');
 
     return $url;
 };

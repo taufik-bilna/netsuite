@@ -166,27 +166,29 @@
              * Look for all widgets.
              */
             $('[data-widget]', context).each(function () {
+            //$('[data-widget]', $('#editable-sample')).each(function () {
                 var widgets = this.getAttribute('data-widget').split(/\s?,\s?/)
                     , len = widgets.length
                     , widget
                     , data;
-console.log(widgets);
-console.log(len);
-console.log(data);
+//console.log(widgets);
+//console.log(len);
+//console.log(data);
                 for (; len--;) {
                     widget = widgets[len];
                     if (widget.indexOf('invoked') != -1) {
                         continue;
                     }
-
-                    if (!(widget in BilnaNs.widget)) {
-                        BilnaNs.helper.log('Widget with name "{name}" not found.', {name: widget});
+//console.log('for loop');
+//console.log(widget.substring(0,4));
+                    if (!(widget.substring(0,4) in BilnaNs.widget)) {
+                        BilnaNs.helper.log('Widget with name "{name}" not found.', {name: widget.substring(0,4)});
                         continue;
                     }
-
-                    widget = BilnaNs.widget[widget];
+//console.log($(this).attr('id'));
+                    widget = BilnaNs.widget[widget.substring(0,4)];
                     if (widget.init) {
-                        widget.init($(this));
+                        widget.init($(this), $(this).attr('id'));
                         widgets[len] = '(' + widgets[len] + '):invoked';
                     }
                 }
@@ -207,9 +209,14 @@ console.log(data);
         /**
          * Init on update.
          */
-        $(document).bind("DOMNodeInserted", function (event) {
-            BilnaNs.widget.init(event.target);
-        });
+        //$(document).bind("DOMNodeInserted", function (event) {
+//console.log(event.relatedNode.nodeName); 
+//console.log('_initSystem '); 
+//console.log(event.target);        editable-sampleid999999    editable-sampleid123456
+            //BilnaNs.widget.init(event.target);
+            BilnaNs.widget.init($('#editable-sampleid123456 tbody'));
+            BilnaNs.widget.init($('#editable-sampleid999999 tbody'));
+        //});
     }
 
 }(window, jQuery));

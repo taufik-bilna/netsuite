@@ -176,6 +176,41 @@ $di['router'] = function () {
         'id' => 1 
     ))->setName("admin-changelog-delete");
 
+    $router->add('/importtest', array(
+        //'namespace' => 'Ns\Netsuite\Controllers',
+        'module' => 'netsuite',
+        'controller' => 'import',
+        'action' => 'test' 
+    ));
+
+    $router->add('/ajaximporttest', array(
+        //'namespace' => 'Ns\Netsuite\Controllers',
+        'module' => 'netsuite',
+        'controller' => 'import',
+        'action' => 'ajaxtest' 
+    ));
+
+    $router->add('/ajaximporttest', array(
+        //'namespace' => 'Ns\Netsuite\Controllers',
+        'module' => 'netsuite',
+        'controller' => 'import',
+        'action' => 'ajaxtest' 
+    ));
+
+    $router->add('/apilogtestgrid', array(
+        //'namespace' => 'Ns\Netsuite\Controllers',
+        'module' => 'netsuite',
+        'controller' => 'import',
+        'action' => 'apilogtestgrid' 
+    ));
+
+    $router->add('/importgrid', array(
+        //'namespace' => 'Ns\Netsuite\Controllers',
+        'module' => 'netsuite',
+        'controller' => 'import',
+        'action' => 'importgrid' 
+    ));
+
     $router->removeExtraSlashes(true);
 
     return $router;

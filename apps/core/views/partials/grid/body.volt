@@ -1,4 +1,4 @@
-<tbody>
+<tbody data-url="{{ grid.getUrl() }}">
 {% if grid %}
 	{% for item in grid.getItems() %}
         <tr>

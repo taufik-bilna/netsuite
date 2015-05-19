@@ -3,13 +3,34 @@
 namespace Ns\Netsuite\Libraries\Grid;
 
 use Phalcon\Mvc\Model\Query\Builder;
-use Ns\Core\Libraries\Grid\GridItem;
+//use Ns\Core\Libraries\Grid\GridItem;
 use Ns\Core\Libraries\Grid\AbstractGrid;
 
 class ImportGrid extends AbstractGrid
 {
-    protected $_gridTitle = 'Import Status';
+    /**
+     * Grid id.
+     *
+     * @var string
+     */
+    protected $_id = 'data-table-import';
 
+    /**
+     * Grid identifier.
+     *
+     * @var string
+     */
+    protected $identifier = 'grid';
+
+    /**
+     * Rerieve grid URL
+     *
+     * @return string
+     */
+    public function getGridUrl()
+    {
+        return $this->getDI()->getUrl()->get('import');
+    }
     /**
      * Initialize grid columns.
      *
@@ -21,7 +42,7 @@ class ImportGrid extends AbstractGrid
             ->addTextColumn('message_id', 'Message ID')
             ->addTextColumn('action', 'Operation')
             ->addTextColumn('entity_id', 'Entity ID')
-            ->addDateRangeColumn('created', 'Created', ['use_between' => true, 'use_like' => false]);
+            ->addDateRangeColumn('created', 'Created');
     }
 
     /**
