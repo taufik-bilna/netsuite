@@ -29,7 +29,7 @@ class ImportGrid extends AbstractGrid
      */
     public function getGridUrl()
     {
-        return $this->getDI()->getUrl()->get('import');
+        return $this->getDI()->getUrl()->get('importgrid');
     }
     /**
      * Initialize grid columns.

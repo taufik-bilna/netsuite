@@ -162,17 +162,13 @@ class AbstractGrid
                     $sort = $this->_columns[$iSortCol]['colname'];
                     $sSortDir = $this->getDI()->getRequest()->getQuery('sSortDir_'.$i);
                     $direction = ($sSortDir =='asc' ? 'asc' : 'desc');
-                    $source->orderBy(sprintf('%s %s', $sort, $direction));
+                    //$source->orderBy(sprintf('%s %s', $sort, $direction));
+                    $orderBy[] = sprintf('%s %s', $sort, $direction);
                 }
             }
-        }
 
-        // Additional checks.
-        if (!$sort || ($direction != 'DESC' && $direction != 'ASC')) {
-            return;
+            $source->orderBy(implode(",", $orderBy));
         }
-
-        $source->orderBy(sprintf('%s %s', $sort, $direction));
     }
 
     /**

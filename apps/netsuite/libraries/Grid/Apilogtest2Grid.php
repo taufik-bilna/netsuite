@@ -36,7 +36,7 @@ class Apilogtest2Grid extends AbstractGrid
      */
     public function getGridUrl()
     {
-        return $this->getDI()->getUrl()->get('importgrid');
+        return $this->getDI()->getUrl()->get('apilogtestgrid');
     }
 
 	/**

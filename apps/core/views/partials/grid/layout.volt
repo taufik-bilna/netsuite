@@ -6,27 +6,27 @@
             </header>
             <div class="panel-body">
                 <div class="adv-table editable-table ">
-                    <table id="{{ grid.getId() }}" class="table grid-table table-striped table-hover table-bordered" data-widget="grid{# grid.getId() #}">
+                    <table id="{{ grid.getId() }}" class="table grid-table table-striped table-hover table-bordered" data-widget="grid">
                         <thead>
                         <tr>
-					        {% for name, column in grid.getColumns() %}
-					        	<th>
-						        	{{ column['label'] }}
-					        	</th>
-					        {% endfor %}
-				    	</tr>
-    					</thead>
-    					<tfoot>
-    						<tr>
-    							{% for name, column in grid.getColumns() %}				        	
-						        	<th>
-							        	{{ column['label'] }}
-						        	</th>
-					        	{% endfor %}
-    						</tr>
-    					</tfoot>
-					</table>
-				</div>
+        					        {% for name, column in grid.getColumns() %}
+        					        	<th>
+        						        	{{ column['label'] }}
+        					        	</th>
+        					        {% endfor %}
+        				    	  </tr>
+              					</thead>
+              					<tfoot>
+              						<tr>
+              							{% for name, column in grid.getColumns() %}				        	
+          						        	<th>
+          							        	{{ column['label'] }}
+          						        	</th>
+          					        	{% endfor %}
+              						</tr>
+              					</tfoot>
+          					</table>
+				          </div>
             </div>
         </section>
     </div>
