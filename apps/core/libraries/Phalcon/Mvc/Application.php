@@ -18,8 +18,9 @@ trait Application
      */
     protected function _initDatabase($di, $config)
     {
-    	if( $config->database->adapter == 'mongo' )
+    	if( $config->database->adapter != 'mongo' )
         {
+            
             $di['db'] = function () use ($config) {
                 
                 $adapter = '\Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
@@ -39,7 +40,7 @@ trait Application
             $di['mongo'] = function () use ($config) {
                 
                 $mongo = new \MongoClient("mongodb://" .
-                   $config->database->username . ":"
+                   $config->database->username . ":" .
                    $config->database->password . "@" . 
                    $config->database->host,array("db" => $config->database->dbname)
                 );
